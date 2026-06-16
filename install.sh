@@ -30,7 +30,7 @@ DEST="$TARGET_BASE/skills"
 mkdir -p "$DEST"
 
 if [[ ${#SELECTED[@]} -eq 0 ]]; then
-  SELECTED=(flo-dev-standards flo-nextjs flo-supabase flo-offline flo-ui flo-seo flo-medical)
+  SELECTED=(flo-dev-standards flo-nextjs flo-supabase flo-offline flo-ui flo-seo)
 fi
 
 echo "→ Installation dans : $DEST"

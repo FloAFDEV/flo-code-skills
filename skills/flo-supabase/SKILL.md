@@ -18,7 +18,7 @@ description: Règles d'accès aux données et de sécurité backend avec Supabas
 - **Où/quand** appeler ces helpers dans le rendu → `flo-nextjs`.
 - **Forme/typage** des données → `flo-dev-standards` (Supabase fournit, dev-standards type).
 - **Cache local & synchro offline** → `flo-offline`.
-- **Classification de sensibilité, chiffrement, conformité** → `flo-medical` (supabase applique l'exigence).
+- **Conformité réglementaire / anonymisation (RGPD, HDS)** → hors périmètre du système actuel (à introduire comme skill dédié si besoin ; voir README « Ajouter un skill »).
 
 ## ✅ Règles strictes
 
@@ -52,14 +52,13 @@ description: Règles d'accès aux données et de sécurité backend avec Supabas
 - ❌ Jamais exposer `service_role` à un Client Component ou dans un bundle public.
 - ❌ Jamais faire confiance à un `user_id`/`role` envoyé par le client.
 - ❌ Jamais contourner une policy par une Edge Function `service_role` pour « simplifier » une feature.
-- ❌ Jamais stocker une donnée classée sensible sans appliquer les exigences de `flo-medical`.
+- ❌ Jamais exposer une donnée sensible via une policy trop permissive ou un endpoint public non protégé.
 - ❌ Jamais écrire de logique de rendu Next ni de cache local (→ nextjs / offline).
 
 ## 🥇 Priorité
-Niveau **2**. Cède uniquement devant `flo-medical` (conformité). Prime sur tout le reste sur les questions de sécurité d'accès : aucun besoin de perf, d'UX ou de SEO ne justifie d'affaiblir la RLS.
+Niveau **1 — autorité maximale.** En cas de conflit avec n'importe quel autre skill, supabase l'emporte sur les questions de sécurité d'accès : aucun besoin de perf, d'UX ou de SEO ne justifie d'affaiblir la RLS.
 
 ## 🔗 Interactions
 - **Fournit** les helpers data appelés par `flo-nextjs`.
 - **Se coordonne** avec `flo-offline` : le serveur est la **source de vérité**, le local est un cache à synchroniser.
-- **Obéit** à `flo-medical` (chiffrement, rétention, audit sur données santé).
 - **Applique** `flo-dev-standards` (typage des retours, gestion d'erreurs).

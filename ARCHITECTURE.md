@@ -10,17 +10,16 @@ Il garantit : zéro chevauchement, zéro duplication de règle, zéro conflit d'
 Quand deux skills semblent dicter des règles contradictoires, **le skill le plus haut l'emporte** :
 
 ```
-1. flo-medical        ── conformité & sécurité des données de santé (ne cède jamais)
-2. flo-supabase       ── sécurité d'accès aux données (RLS, secrets)
-3. flo-dev-standards  ── correction du code, typage, architecture
-4. flo-nextjs         ── correction framework / rendu
-5. flo-offline        ── intégrité de la persistance locale
-6. flo-ui             ── présentation & interaction
-7. flo-seo            ── découvrabilité
+1. flo-supabase       ── sécurité d'accès aux données (RLS, secrets) — ne cède jamais
+2. flo-dev-standards  ── correction du code, typage, architecture
+3. flo-nextjs         ── correction framework / rendu
+4. flo-offline        ── intégrité de la persistance locale
+5. flo-ui             ── présentation & interaction
+6. flo-seo            ── découvrabilité
 ```
 
-> **Principe** : la *sécurité et la conformité* l'emportent toujours sur le *confort de développement*, qui l'emporte sur la *présentation*, qui l'emporte sur le *référencement*.
-> Exemple : si flo-seo veut rendre une page publique (SSG) mais flo-medical exige une authentification → **medical gagne**, la page reste protégée.
+> **Principe** : la *sécurité d'accès aux données* l'emporte toujours sur le *confort de développement*, qui l'emporte sur la *présentation*, qui l'emporte sur le *référencement*.
+> Exemple : si flo-seo veut rendre une page publique (SSG) mais flo-supabase la protège derrière une session authentifiée → **supabase gagne**, la page reste protégée.
 
 ---
 
@@ -43,6 +42,7 @@ Chaque ligne appartient à **un seul** skill. Les autres y renvoient.
 | Edge Functions, secrets, service_role | **flo-supabase** |
 | Auth Supabase (session, cookies, middleware d'auth) | **flo-supabase** |
 | Migrations SQL, schéma DB | **flo-supabase** |
+| Protection d'accès aux données sensibles | **flo-supabase** |
 | Dexie/IndexedDB schéma & versions | **flo-offline** |
 | Stratégie de synchro offline-first | **flo-offline** |
 | Résolution de conflits de données locales | **flo-offline** |
@@ -54,10 +54,6 @@ Chaque ligne appartient à **un seul** skill. Les autres y renvoient.
 | JSON-LD / structured data | **flo-seo** |
 | sitemap, robots, canonical, hreflang | **flo-seo** |
 | Cibles Core Web Vitals & budget perf SEO | **flo-seo** |
-| Classification sensibilité données (santé) | **flo-medical** |
-| Anonymisation / pseudonymisation | **flo-medical** |
-| Conformité RGPD / HDS, audit, rétention, consentement | **flo-medical** |
-| Chiffrement des données sensibles (exigence) | **flo-medical** |
 
 ### Frontières souvent confondues — qui tranche
 
@@ -65,9 +61,9 @@ Chaque ligne appartient à **un seul** skill. Les autres y renvoient.
 |--------------|--------------|----------|
 | Metadata SEO | **mécanique** = nextjs · **contenu/stratégie** = seo | nextjs sait *comment* l'API marche ; seo sait *quoi* y mettre |
 | Performance | **rendu/bundle** = nextjs · **budget & impact ranking** = seo · **persistance** = offline | chaque skill optimise sa couche |
-| Auth | **session/RLS** = supabase · **décision de protéger une route** = medical (si données santé) sinon nextjs | sécurité d'abord |
+| Auth | **session/RLS** = supabase · **où appeler le helper dans le rendu** = nextjs | sécurité d'abord |
 | Animations | **flo-ui** uniquement | nextjs/seo n'imposent jamais d'animation |
-| Validation de données | **forme/typage** = dev-standards · **règles d'accès** = supabase · **conformité** = medical | trois angles distincts, jamais dupliqués |
+| Validation de données | **forme/typage** = dev-standards · **règles d'accès** = supabase | deux angles distincts, jamais dupliqués |
 | Optimisation images | **technique (`next/image`)** = nextjs · **alt/SEO** = seo · **esthétique** = ui | |
 
 ---
@@ -77,10 +73,10 @@ Chaque ligne appartient à **un seul** skill. Les autres y renvoient.
 Pour éviter les conflits, **aucun** skill ne fait ce qui suit hors de son périmètre :
 
 - ❌ flo-ui ne décide jamais du rendu serveur/client (→ flo-nextjs).
-- ❌ flo-seo n'impose jamais une stratégie de rendu qui exposerait des données protégées (→ flo-medical/supabase priment).
+- ❌ flo-seo n'impose jamais une stratégie de rendu qui exposerait des données protégées (→ flo-supabase prime).
 - ❌ flo-nextjs ne définit jamais de tokens de design ni d'animations (→ flo-ui).
 - ❌ flo-supabase ne contourne jamais la RLS, même « temporairement » (→ règle absolue).
-- ❌ flo-offline ne stocke jamais en clair des données classées sensibles (→ flo-medical).
+- ❌ flo-offline ne stocke jamais de secret ni de donnée d'accès privilégié côté client (→ flo-supabase).
 - ❌ flo-dev-standards n'introduit pas de règles spécifiques à un framework (reste universel).
 - ❌ Aucun skill ne recopie une règle d'un autre : il y **renvoie**.
 
@@ -89,10 +85,6 @@ Pour éviter les conflits, **aucun** skill ne fait ce qui suit hors de son péri
 ## 4. Carte des interactions
 
 ```
-                 flo-medical  (conformité — autorité max sur la donnée santé)
-                  │  contraint
-        ┌─────────┼──────────────┐
-        ▼         ▼              ▼
   flo-supabase  flo-offline   flo-nextjs
    (accès DB)   (persistance) (rendu/routes)
         │           │              │
@@ -109,7 +101,6 @@ Pour éviter les conflits, **aucun** skill ne fait ce qui suit hors de son péri
 ```
 
 **Lectures clés**
-- `flo-medical` **contraint** supabase, offline et nextjs (chiffrement, protection de routes, rétention).
 - `flo-supabase` ↔ `flo-offline` se coordonnent sur la **synchro** (source de vérité serveur, cache local).
 - `flo-nextjs` **consomme** supabase (data) et **héberge** ui (composants) + seo (metadata).
 - `flo-ui` et `flo-seo` **partagent** le même DOM : ui possède le style/interaction, seo possède la sémantique/metadata.

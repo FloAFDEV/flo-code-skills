@@ -1,9 +1,9 @@
 # flo-code-skills
 
 > Système universel de skills Claude Code de Florian — standard unique pour tous les projets
-> **Next.js 15+** · **Vite/React** · **Supabase** · **Offline-first (Dexie/IndexedDB)** · **SaaS & applications médicales** · **UX/UI premium** · **SEO avancé**.
+> **Next.js 15+** · **Vite/React** · **Supabase** · **Offline-first (Dexie/IndexedDB)** · **SaaS** · **UX/UI premium** · **SEO avancé**.
 
-Ce dépôt regroupe 7 skills Claude Code **cohérents, non redondants et sans conflit d'autorité**.
+Ce dépôt regroupe 6 skills Claude Code **cohérents, non redondants et sans conflit d'autorité**.
 Chaque skill possède un périmètre strict, des règles explicites, des **anti-règles** (ce qu'il ne doit jamais faire) et une hiérarchie de priorité claire.
 
 ---
@@ -17,7 +17,7 @@ Chaque skill possède un périmètre strict, des règles explicites, des **anti-
 
 ---
 
-## 📦 Les 7 skills
+## 📦 Les 6 skills
 
 | Skill | Domaine | Question à laquelle il répond |
 |-------|---------|-------------------------------|
@@ -27,7 +27,6 @@ Chaque skill possède un périmètre strict, des règles explicites, des **anti-
 | **flo-offline** | Persistance locale | *Comment fonctionne l'offline-first et la synchro ?* |
 | **flo-ui** | Présentation & interaction | *À quoi ça ressemble et comment ça réagit ?* |
 | **flo-seo** | Découvrabilité | *Comment est-on indexé et partagé ?* |
-| **flo-medical** | Conformité & sensibilité | *Comment protège-t-on des données de santé ?* |
 
 Détail complet des frontières dans **[`ARCHITECTURE.md`](./ARCHITECTURE.md)**.
 
@@ -59,7 +58,7 @@ Claude Code charge automatiquement tout dossier contenant un `SKILL.md` valide.
 | Type de projet | Skills à installer |
 |----------------|--------------------|
 | Next.js SaaS | `dev-standards` + `nextjs` + `supabase` + `ui` + `seo` |
-| App médicale (PatientHub) | **tous** (medical obligatoire) |
+| App Next.js + offline | `dev-standards` + `nextjs` + `supabase` + `offline` + `ui` |
 | Vite/React offline | `dev-standards` + `ui` + `offline` |
 | Landing / site vitrine | `dev-standards` + `nextjs` + `ui` + `seo` |
 
@@ -76,6 +75,8 @@ Claude Code charge automatiquement tout dossier contenant un `SKILL.md` valide.
 5. Déclare ses **interactions** (qui il consulte / à qui il délègue).
 
 Règle d'or : **un nouveau skill ne duplique jamais une responsabilité existante** — il la complète ou la spécialise.
+
+> 💡 Besoin de conformité données de santé (RGPD/HDS, anonymisation) un jour ? C'est exactement le cas d'usage d'un skill ajouté proprement : nouveau dossier `flo-<domaine>`, autorité placée en tête de hiérarchie, exigences qui contraignent les autres skills sans dupliquer leur technique.
 
 ---
 

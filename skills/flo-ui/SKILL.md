@@ -54,7 +54,7 @@ description: Design system implicite et qualité d'interface premium. À activer
 - ❌ Jamais un état de données sans gérer loading/empty/error.
 
 ## 🥇 Priorité
-Niveau **6**. Cède devant tous les skills de données/sécurité/framework. Prime uniquement sur `flo-seo` pour les questions purement visuelles — mais l'accessibilité (a11y) ne se sacrifie jamais au profit du SEO ou de l'esthétique.
+Niveau **5**. Cède devant tous les skills de données/sécurité/framework. Prime uniquement sur `flo-seo` pour les questions purement visuelles — mais l'accessibilité (a11y) ne se sacrifie jamais au profit du SEO ou de l'esthétique.
 
 ## 🔗 Interactions
 - **Vit dans** les composants hébergés par `flo-nextjs`.

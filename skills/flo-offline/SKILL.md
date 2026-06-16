@@ -18,7 +18,7 @@ description: Architecture offline-first avec Dexie/IndexedDB. À activer pour le
 - **Source de vérité serveur, RLS, secrets** → `flo-supabase`.
 - **Affichage des états (offline/syncing/error)** → `flo-ui` (offline fournit le statut, ui le rend).
 - **Typage des entités, gestion d'erreurs** → `flo-dev-standards`.
-- **Chiffrement local des données sensibles (exigence)** → `flo-medical`.
+- **Quelles données ont le droit d'être mises en cache localement (sécurité d'accès)** → `flo-supabase`.
 
 ## ✅ Règles strictes
 
@@ -41,17 +41,16 @@ description: Architecture offline-first avec Dexie/IndexedDB. À activer pour le
 
 ## ⛔ Anti-règles (jamais)
 - ❌ Jamais traiter le local comme source de vérité : le serveur (`flo-supabase`) arbitre.
-- ❌ Jamais **stocker en clair** dans IndexedDB une donnée classée sensible par `flo-medical`.
+- ❌ Jamais stocker dans IndexedDB une donnée que `flo-supabase` protège derrière une autorisation, sans précaution équivalente (portée à l'utilisateur, purge à la déconnexion).
 - ❌ Jamais stocker de secret, token long ou clé `service_role` côté client.
 - ❌ Jamais de synchro non idempotente ni de file de mutations non persistée.
 - ❌ Jamais afficher soi-même l'UI de statut (→ `flo-ui` consomme le statut exposé).
 - ❌ Jamais résoudre un conflit par écrasement silencieux sans stratégie déclarée.
 
 ## 🥇 Priorité
-Niveau **5**. Cède devant medical, supabase et dev-standards. En cas de tension avec `flo-ui` (ex. : afficher un état périmé), l'intégrité des données prime sur le confort visuel.
+Niveau **4**. Cède devant supabase, dev-standards et nextjs. En cas de tension avec `flo-ui` (ex. : afficher un état périmé), l'intégrité des données prime sur le confort visuel.
 
 ## 🔗 Interactions
 - **Se coordonne** avec `flo-supabase` : pull/push contre la source de vérité, respect de la RLS (la sync utilise la clé `anon` + session de l'utilisateur).
 - **Expose** un statut de synchro à `flo-ui` (online/offline/syncing/conflict) sans gérer l'affichage.
-- **Obéit** à `flo-medical` pour le chiffrement et la rétention locale des données santé.
 - **Applique** `flo-dev-standards` (typage des entités, `Result` sur les opérations faillibles).

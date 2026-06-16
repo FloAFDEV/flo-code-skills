@@ -19,7 +19,7 @@ description: Socle universel de qualité de code, valable sur TOUS les projets (
 - **Accès données & sécurité** → `flo-supabase`.
 - **Style, composants visuels, animations** → `flo-ui`.
 - **Persistance locale** → `flo-offline`.
-- **Metadata/SEO** → `flo-seo`. **Conformité santé** → `flo-medical`.
+- **Metadata/SEO** → `flo-seo`.
 
 ## ✅ Règles strictes
 
@@ -58,7 +58,7 @@ description: Socle universel de qualité de code, valable sur TOUS les projets (
 - ❌ Jamais committer du code commenté « au cas où » : git est l'historique.
 
 ## 🥇 Priorité
-Niveau **3** dans la hiérarchie. Cède devant `flo-medical` (conformité) et `flo-supabase` (sécurité), prime sur tout le reste sur les questions de **correction du code**.
+Niveau **2** dans la hiérarchie. Cède devant `flo-supabase` (sécurité d'accès), prime sur tout le reste sur les questions de **correction du code**.
 
 ## 🔗 Interactions
 - **Consulté par tous** les autres skills (typage, archi, erreurs).

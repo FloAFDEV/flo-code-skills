@@ -19,7 +19,7 @@ description: Stratégie de découvrabilité et référencement. À activer pour 
 - **Mécanique** de l'API Metadata (`generateMetadata`, fichiers `sitemap.ts`/`robots.ts`) → `flo-nextjs`.
 - **Optimisation technique des images/polices** (`next/image`, `next/font`) → `flo-nextjs`.
 - **Style, animations, a11y** → `flo-ui` (seo n'écrit pas de CSS).
-- **Décision de rendre une page publique** → soumise à `flo-medical`/`flo-supabase`.
+- **Décision de rendre une page publique** → soumise à `flo-supabase` (sécurité d'accès).
 
 ## ✅ Règles strictes
 
@@ -46,17 +46,17 @@ description: Stratégie de découvrabilité et référencement. À activer pour 
 12. Définir un **budget Core Web Vitals** (LCP < 2.5s, CLS < 0.1, INP < 200ms) comme objectif ; signaler les régressions. La *réalisation technique* (rendu, images) est exécutée par `flo-nextjs`.
 
 ## ⛔ Anti-règles (jamais)
-- ❌ Jamais exiger qu'une page soit publique/indexable si `flo-medical` ou `flo-supabase` la protège — **noindex + auth gagnent toujours**.
+- ❌ Jamais exiger qu'une page soit publique/indexable si `flo-supabase` la protège — **noindex + auth gagnent toujours**.
 - ❌ Jamais réécrire la mécanique de l'API Next (seo fournit les valeurs, nextjs les branche).
 - ❌ Jamais de keyword stuffing, de structured data invisible ou de cloaking.
 - ❌ Jamais imposer du style ou des animations (→ `flo-ui`).
 - ❌ Jamais indexer des pages de compte, dashboards ou contenus utilisateur sensibles.
 
 ## 🥇 Priorité
-Niveau **7** (le plus bas). Cède devant **tous** les autres skills. Le SEO ne justifie jamais d'affaiblir la sécurité, la conformité, l'a11y ou la correction du rendu.
+Niveau **6** (le plus bas). Cède devant **tous** les autres skills. Le SEO ne justifie jamais d'affaiblir la sécurité, l'a11y ou la correction du rendu.
 
 ## 🔗 Interactions
 - **Fournit** les valeurs de metadata à `flo-nextjs` qui les expose via l'API.
 - **Partage le DOM** avec `flo-ui` : seo possède la sémantique d'indexation et l'`alt` orienté pertinence ; ui possède le style et l'a11y. Pas de conflit : un `alt` bien écrit sert les deux.
-- **Soumis** à `flo-medical`/`flo-supabase` pour ce qui est indexable.
+- **Soumis** à `flo-supabase` pour ce qui est indexable (jamais de page protégée rendue publique).
 - **Applique** `flo-dev-standards` pour le code des helpers SEO.

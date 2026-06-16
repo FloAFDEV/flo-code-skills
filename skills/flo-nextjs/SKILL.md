@@ -21,7 +21,7 @@ description: Règles Next.js 15+ (App Router). À activer pour tout travail sur 
 - Tout **style, composant visuel, animation** → `flo-ui`.
 - **Requêtes Supabase, RLS, secrets** → `flo-supabase` (nextjs *appelle* mais n'écrit pas les règles d'accès).
 - **Typage, archi de dossiers générale, erreurs** → `flo-dev-standards`.
-- **Protection d'une route pour cause de données santé** → `flo-medical` prime.
+- **Décision de protéger/authentifier une route pour cause de données sensibles** → `flo-supabase` prime.
 
 ## ✅ Règles strictes
 
@@ -39,7 +39,7 @@ description: Règles Next.js 15+ (App Router). À activer pour tout travail sur 
 
 ### Server Actions & mutations
 9. Mutations via **Server Actions** (`'use server'`), pas de route handler ad hoc quand une action suffit.
-10. Toute Server Action **valide ses entrées** (Zod) et **vérifie l'autorisation** (déléguée à supabase/medical) avant d'agir — jamais de confiance dans le payload client.
+10. Toute Server Action **valide ses entrées** (Zod) et **vérifie l'autorisation** (déléguée à supabase) avant d'agir — jamais de confiance dans le payload client.
 11. Après mutation : `revalidatePath`/`revalidateTag` ciblé, pas d'invalidation globale.
 
 ### Optimisations natives
@@ -61,10 +61,10 @@ description: Règles Next.js 15+ (App Router). À activer pour tout travail sur 
 - ❌ Jamais écrire le *contenu* SEO d'une page (→ `flo-seo`).
 
 ## 🥇 Priorité
-Niveau **4**. Cède devant medical, supabase, dev-standards. Tranche sur les questions de rendu/routing face à ui et seo (ex. : une exigence de présentation ne justifie pas de casser la frontière Server/Client).
+Niveau **3**. Cède devant supabase et dev-standards. Tranche sur les questions de rendu/routing face à offline, ui et seo (ex. : une exigence de présentation ne justifie pas de casser la frontière Server/Client).
 
 ## 🔗 Interactions
 - **Consomme** `flo-supabase` pour les données (appelle les helpers, n'écrit pas les policies).
 - **Héberge** les composants de `flo-ui` et **branche** la metadata de `flo-seo`.
 - **Applique** `flo-dev-standards` pour typage/archi/erreurs.
-- **Obéit** à `flo-medical` quand une route touche des données de santé (protection, no-cache).
+- **Obéit** à `flo-supabase` quand une route touche des données protégées (auth requise, no-cache).
