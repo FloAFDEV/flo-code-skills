@@ -1,5 +1,10 @@
 # Rapport final — évolution du socle flo-code-skills
 
+> 🗄️ **Archive Phase 1** (10 skills · 77 responsabilités). Document historique conservé pour la
+> traçabilité. **État courant : 12 skills · 88 responsabilités** → voir
+> [`MATURITY.md`](./MATURITY.md), [`AUDIT-PHASE2.md`](./AUDIT-PHASE2.md) et
+> [`../CHANGELOG.md`](../CHANGELOG.md).
+
 ## 1. Choix effectués
 
 - **10 skills, organisés en pipeline** plutôt qu'en liste plate :

@@ -100,3 +100,4 @@ Niveau **4**. Cède devant medical, supabase, dev-standards. Tranche sur le rend
 - **Héberge** les composants de `flo-ui` et **branche** la metadata de `flo-seo`.
 - **Applique** `flo-dev-standards`.
 - **Obéit** à `flo-medical`/`flo-supabase` quand une route touche des données protégées.
+- **Se coordonne** avec `flo-offline` en contexte offline-first : les lectures côté client depuis le store local relèvent de `flo-offline` et ne violent **pas** la règle « Server Component par défaut » (exception assumée, propre à l'offline-first).

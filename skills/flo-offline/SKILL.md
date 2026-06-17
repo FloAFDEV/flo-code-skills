@@ -79,5 +79,6 @@ Niveau **5**. Cède devant medical, supabase, dev-standards, nextjs. Face à `fl
 ## 🔗 Interactions
 - **Se coordonne** avec `flo-supabase` : pull/push contre la source de vérité, respect de la RLS (clé `anon` + session).
 - **Expose** un statut à `flo-ui` (online/offline/syncing/conflict) sans gérer l'affichage.
+- **Se coordonne** avec `flo-nextjs` : les lectures depuis le store local sont client-side (exception assumée à « Server Component par défaut ») ; éviter les incohérences d'hydration en hydratant depuis le serveur puis en rafraîchissant depuis le local.
 - **Obéit** à `flo-medical` (chiffrement/rétention locale).
 - **Applique** `flo-dev-standards`.
