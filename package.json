@@ -1,0 +1,11 @@
+{
+  "name": "flo-code-skills",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Système universel de skills Claude Code (Next.js, Supabase, offline-first, UI premium, SEO, médical).",
+  "type": "module",
+  "scripts": {
+    "check:overlaps": "npx --yes tsx tools/check-overlaps.ts"
+  },
+  "license": "MIT"
+}

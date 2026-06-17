@@ -1,126 +1,93 @@
 # Architecture du système flo-code-skills
 
-Ce document est la **source de vérité** pour les frontières entre skills.
-Il garantit : zéro chevauchement, zéro duplication de règle, zéro conflit d'autorité.
+Principes internes et carte d'interactions. **La matrice de responsabilités complète et la
+hiérarchie d'autorité vivent dans [`docs/skill-boundaries.md`](./docs/skill-boundaries.md)**
+(source de vérité, vérifiée par CI). Ce document explique *pourquoi* le système tient.
 
 ---
 
-## 1. Hiérarchie d'autorité (résolution de conflits)
+## 1. Trois principes
 
-Quand deux skills semblent dicter des règles contradictoires, **le skill le plus haut l'emporte** :
+1. **Une responsabilité, un seul propriétaire.** Chaque token `owns` (frontmatter des `SKILL.md`)
+   appartient à exactement un skill. `tools/check-overlaps.ts` échoue sinon.
+2. **Autorité hiérarchique.** Quand des règles se contredisent, le skill le plus haut l'emporte
+   (medical > supabase > dev-standards > nextjs > offline > frontend-design > ui > seo > design-taste > playwright).
+3. **Pipeline par phase.** Les skills collaborent dans le temps : `PLAN → BUILD → AUDIT → VALIDATION`.
+   C'est ce découpage temporel qui empêche les trois skills de design de se chevaucher.
+
+---
+
+## 2. Le découpage qui évite les collisions
+
+### Le trio design (le point le plus sensible)
+- **frontend-design** = *quoi/où/pourquoi* (structure, IA, parcours) — **avant les pixels**. Ne code pas.
+- **flo-ui** = *comment* (composants, tokens, a11y, animation) — **transforme la structure en code**.
+- **design-taste** = *est-ce bon ?* (critique, anti-IA, raffinement) — **après le rendu**. Ne code pas.
+
+### Les autres frontières classiques
+- **Metadata** : nextjs = mécanique de l'API · seo = contenu.
+- **Performance** : nextjs = rendu/bundle · seo = budget/ranking · offline = cache local.
+- **Sécurité** : medical = exigence · supabase = accès données · dev-standards = code.
+- **Cache** : offline = local/IndexedDB · nextjs = HTTP/`revalidate`.
+- **Captures** : playwright = produit · design-taste = interprète.
+- **Tests** : dev-standards = unitaire · playwright = E2E.
+
+> Détail exhaustif (Couvre / Ne couvre PAS / Dépendances / Risques) → `docs/skill-boundaries.md`.
+
+---
+
+## 3. Carte des interactions
 
 ```
-1. flo-supabase       ── sécurité d'accès aux données (RLS, secrets) — ne cède jamais
-2. flo-dev-standards  ── correction du code, typage, architecture
-3. flo-nextjs         ── correction framework / rendu
-4. flo-offline        ── intégrité de la persistance locale
-5. flo-ui             ── présentation & interaction
-6. flo-seo            ── découvrabilité
-```
+        flo-medical ──contraint──▶ supabase · offline · nextjs · seo · playwright
+            │ (autorité max, données santé)
+            ▼
+  ┌───────────────── BUILD ─────────────────┐
+  flo-supabase ◀──sync──▶ flo-offline        │   flo-nextjs héberge flo-ui,
+  (accès DB)              (cache local)       │   branche flo-seo (metadata)
+  └───────────────────────────────────────────┘
+            ▲ data            ▲ structure
+            │                 │
+  PLAN ─────┴─── frontend-design ──▶ flo-ui ──▶ design-taste ──▶ validation
+                (UX/IA/structure)   (code)      (audit visuel)
+                                       ▲             ▲
+                                       └─ playwright ─┘ (E2E + captures)
 
-> **Principe** : la *sécurité d'accès aux données* l'emporte toujours sur le *confort de développement*, qui l'emporte sur la *présentation*, qui l'emporte sur le *référencement*.
-> Exemple : si flo-seo veut rendre une page publique (SSG) mais flo-supabase la protège derrière une session authentifiée → **supabase gagne**, la page reste protégée.
-
----
-
-## 2. Matrice de responsabilités (qui possède quoi)
-
-Chaque ligne appartient à **un seul** skill. Les autres y renvoient.
-
-| Domaine concret | Skill propriétaire |
-|-----------------|--------------------|
-| TypeScript strict, types partagés, génériques | **flo-dev-standards** |
-| Arborescence dossiers, nommage, barrels | **flo-dev-standards** |
-| Gestion d'erreurs (Result, try/catch, boundaries) | **flo-dev-standards** |
-| Conventions Git, commits, refactoring | **flo-dev-standards** |
-| App Router, layouts, route groups | **flo-nextjs** |
-| Server vs Client Components (décision) | **flo-nextjs** |
-| Data fetching serveur, caching, revalidation | **flo-nextjs** |
-| `next/image`, `next/font`, Server Actions | **flo-nextjs** |
-| API Metadata Next (mécanique `generateMetadata`) | **flo-nextjs** |
-| RLS, policies, rôles Postgres | **flo-supabase** |
-| Edge Functions, secrets, service_role | **flo-supabase** |
-| Auth Supabase (session, cookies, middleware d'auth) | **flo-supabase** |
-| Migrations SQL, schéma DB | **flo-supabase** |
-| Protection d'accès aux données sensibles | **flo-supabase** |
-| Dexie/IndexedDB schéma & versions | **flo-offline** |
-| Stratégie de synchro offline-first | **flo-offline** |
-| Résolution de conflits de données locales | **flo-offline** |
-| Design system, tokens, Tailwind conventions | **flo-ui** |
-| Micro-interactions, hover, transitions, animations | **flo-ui** |
-| Patterns de CTA, états (loading/empty/error visuels) | **flo-ui** |
-| Accessibilité (ARIA, focus, contraste, clavier) | **flo-ui** |
-| Contenu metadata (titre/description, OG, Twitter) | **flo-seo** |
-| JSON-LD / structured data | **flo-seo** |
-| sitemap, robots, canonical, hreflang | **flo-seo** |
-| Cibles Core Web Vitals & budget perf SEO | **flo-seo** |
-
-### Frontières souvent confondues — qui tranche
-
-| Sujet ambigu | Propriétaire | Pourquoi |
-|--------------|--------------|----------|
-| Metadata SEO | **mécanique** = nextjs · **contenu/stratégie** = seo | nextjs sait *comment* l'API marche ; seo sait *quoi* y mettre |
-| Performance | **rendu/bundle** = nextjs · **budget & impact ranking** = seo · **persistance** = offline | chaque skill optimise sa couche |
-| Auth | **session/RLS** = supabase · **où appeler le helper dans le rendu** = nextjs | sécurité d'abord |
-| Animations | **flo-ui** uniquement | nextjs/seo n'imposent jamais d'animation |
-| Validation de données | **forme/typage** = dev-standards · **règles d'accès** = supabase | deux angles distincts, jamais dupliqués |
-| Optimisation images | **technique (`next/image`)** = nextjs · **alt/SEO** = seo · **esthétique** = ui | |
-
----
-
-## 3. Interdictions transversales (anti-règles globales)
-
-Pour éviter les conflits, **aucun** skill ne fait ce qui suit hors de son périmètre :
-
-- ❌ flo-ui ne décide jamais du rendu serveur/client (→ flo-nextjs).
-- ❌ flo-seo n'impose jamais une stratégie de rendu qui exposerait des données protégées (→ flo-supabase prime).
-- ❌ flo-nextjs ne définit jamais de tokens de design ni d'animations (→ flo-ui).
-- ❌ flo-supabase ne contourne jamais la RLS, même « temporairement » (→ règle absolue).
-- ❌ flo-offline ne stocke jamais de secret ni de donnée d'accès privilégié côté client (→ flo-supabase).
-- ❌ flo-dev-standards n'introduit pas de règles spécifiques à un framework (reste universel).
-- ❌ Aucun skill ne recopie une règle d'un autre : il y **renvoie**.
-
----
-
-## 4. Carte des interactions
-
-```
-  flo-supabase  flo-offline   flo-nextjs
-   (accès DB)   (persistance) (rendu/routes)
-        │           │              │
-        └─────┬─────┘              │
-              │ données            │ structure
-              ▼                    ▼
-        flo-dev-standards  ◄──────── socle commun (typage, archi, erreurs)
-              ▲
-              │ s'appuie sur
-        ┌─────┴─────┐
-        ▼           ▼
-     flo-ui      flo-seo
-  (présentation) (découvrabilité)
+  Socle transverse : flo-dev-standards (consulté par tous, ne consulte personne)
 ```
 
 **Lectures clés**
-- `flo-supabase` ↔ `flo-offline` se coordonnent sur la **synchro** (source de vérité serveur, cache local).
-- `flo-nextjs` **consomme** supabase (data) et **héberge** ui (composants) + seo (metadata).
-- `flo-ui` et `flo-seo` **partagent** le même DOM : ui possède le style/interaction, seo possède la sémantique/metadata.
-- `flo-dev-standards` est **consulté par tous** (jamais l'inverse).
+- `flo-medical` **contraint** sans implémenter : il pose les exigences, les autres exécutent.
+- `flo-supabase` ↔ `flo-offline` se coordonnent sur la synchro (serveur = vérité, local = cache).
+- `frontend-design → flo-ui → design-taste` est un **flux**, pas une hiérarchie de pouvoir : chacun
+  intervient à sa phase ; design-taste renvoie ses corrections en amont.
+- `playwright` valide le build et **alimente** design-taste en captures.
+- `flo-dev-standards` est **consulté par tous** ; il ne dépend de personne.
 
 ---
 
-## 5. Format d'un SKILL.md
+## 4. Format d'un SKILL.md
 
 ```markdown
 ---
 name: flo-xxx
 description: Quand activer ce skill (déclencheurs concrets).
+owns:        # responsabilités canoniques — uniques dans tout le repo
+  - token-a
+excludes:    # ce qu'il délègue (token possédé par un AUTRE skill)
+  - token-b
 ---
 
 # flo-xxx
-## 🎯 Scope          → périmètre exact (ce qu'il possède)
-## 🚫 Hors-scope     → ce qu'il délègue, et à qui
-## ✅ Règles strictes → règles numérotées, applicables
-## ⛔ Anti-règles     → ce qu'il ne fait JAMAIS
-## 🥇 Priorité        → position dans la hiérarchie + arbitrages
-## 🔗 Interactions    → qui il consulte / à qui il délègue
+## ▶️ When To Invoke      → déclencheurs d'activation
+## ⏹️ When NOT To Invoke  → quand déléguer, et à qui
+## 🎯 Scope               → responsabilités (miroir de `owns`)
+## 🚫 Hors-scope          → délégations (miroir de `excludes`)
+## ✅ Règles strictes      → règles numérotées, applicables
+## ⛔ Anti-règles          → ce qu'il ne fait JAMAIS
+## 🥇 Priorité             → position dans la hiérarchie + arbitrages
+## 🔗 Interactions         → qui il consulte / à qui il délègue
 ```
+
+Le frontmatter `owns`/`excludes` est la version **machine-lisible** des sections Scope/Hors-scope ;
+c'est lui que `tools/check-overlaps.ts` analyse.
