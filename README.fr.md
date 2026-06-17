@@ -2,7 +2,7 @@
 
 # flo-code-skills
 
-> Système universel de skills Claude Code de Florian — socle de référence orienté **production professionnelle**.
+> Système universel de skills Claude Code de Florent (AFDEV) — socle de référence orienté **production professionnelle**.
 > **Next.js 15+** · **Vite/React** · **Supabase** · **Offline-first (Dexie/IndexedDB)** · **SaaS & médical** · **UX/UI premium** · **SEO avancé** · **E2E Playwright**.
 
 12 skills **cohérents, non redondants et sans conflit d'autorité**, **versionnés** et vérifiés automatiquement.
