@@ -1,5 +1,6 @@
 ---
 name: flo-medical
+version: 1.0.0
 description: Contrainte métier pour applications médicales (PatientHub et apps de santé). À activer dès qu'une donnée de santé, patient ou identifiante est manipulée — protection des données sensibles, séparation des données, logique métier santé et contraintes réglementaires (RGPD/HDS). AUTORITÉ MAXIMALE : ses exigences l'emportent sur tout autre skill. Il fixe le QUOI ; l'implémentation technique est déléguée.
 owns:
   - medical-apps
@@ -63,7 +64,7 @@ excludes:
 
 ### Posture
 11. **Privacy & security by design / by default**.
-12. En cas de doute sur la sensibilité : **traiter comme sensible** et signaler.
+12. En contexte applicatif santé, en cas de doute sur la sensibilité d'une donnée : **traiter comme sensible** et signaler (ne s'applique pas hors domaine santé).
 
 ## ⛔ Anti-règles (jamais)
 - ❌ Jamais de vraie donnée patient hors production (dev, test, démo, capture, ticket).

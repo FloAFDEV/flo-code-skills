@@ -1,5 +1,6 @@
 ---
 name: flo-dev-standards
+version: 1.0.0
 description: Socle universel de qualité de code, valable sur TOUS les projets (Next.js, Vite/React, Node, scripts). À activer pour toute écriture ou revue de code TypeScript/JavaScript — typage strict, architecture des dossiers, nommage, gestion d'erreurs, conventions Git, refactoring, sécurité du code et tests unitaires. Ne contient AUCUNE règle spécifique à un framework.
 owns:
   - typescript-strict
@@ -36,6 +37,8 @@ excludes:
 - Style, composants, tokens → `flo-ui`.
 - Tests E2E/parcours → `playwright` (ici = unitaire seulement).
 - Décisions de structure d'écran/UX → `frontend-design`.
+- **Diagnostiquer** une erreur runtime / lire une stack trace / traquer un bug → `flo-debug` (ici = *pattern* d'erreur, pas diagnostic).
+- Auditer un projet entier / décider quels skills lancer → `flo-project-audit`.
 
 ## 🎯 Scope (responsabilités)
 - Configuration **TypeScript strict** et discipline de typage.

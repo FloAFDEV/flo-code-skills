@@ -7,6 +7,9 @@
 ## Pipeline produit
 
 ```
+  ┌─ ORCHESTRATEUR (méta, ne juge pas) ─┐   ┌─ DIAGNOSTIC transverse ─┐
+  │         flo-project-audit            │   │        flo-debug         │
+  └──────────────────────────────────────┘   └──────────────────────────┘
             ┌──────────── SOCLE (tout le code) ────────────┐
             │            flo-dev-standards                  │
             └───────────────────────────────────────────────┘
@@ -22,7 +25,12 @@
                        flo-seo
 
   Boucle qualité : Code → verify → playwright → design-taste → validation finale
+  flo-debug intervient à la demande (bug/perf) ; flo-project-audit orchestre l'ensemble.
 ```
+
+Voir aussi : [`scorecard.md`](./scorecard.md) (évaluation 10 dimensions),
+[`VERSIONING.md`](./VERSIONING.md) (évolution non cassante),
+[`AUDIT-PHASE2.md`](./AUDIT-PHASE2.md) (revue & corrections).
 
 ## Hiérarchie d'autorité (résolution de conflits)
 
@@ -42,6 +50,10 @@
 > Plus le numéro est petit, plus l'autorité est forte. `design-taste` peut exiger une
 > reprise visuelle mais ne casse jamais a11y/sécurité/correction. `playwright` rapporte
 > des faits ; la correction revient au skill propriétaire.
+>
+> **Hors échelle (non-autoritaires)** :
+> - `flo-project-audit` — **méta-coordinateur (niveau 0)** : orchestre, ne juge pas, défère aux niveaux 1–10.
+> - `flo-debug` — **diagnostic transverse** : trouve la cause sur tout le stack, défère le correctif au skill propriétaire.
 
 ## Matrice Skill → Mission / Couvre / Ne couvre PAS / Dépendances / Risque
 
@@ -57,8 +69,10 @@
 | **flo-ui** | Implémentation UI | ui-components, tailwind, responsive, accessibility, animations, micro-interactions, design-system, design-tokens, interface-patterns | screen-structure→frontend-design, information-architecture→frontend-design, perceived-quality-audit→design-taste, ai-artifact-detection→design-taste, metadata-content→seo, server-components→nextjs | frontend-design, dev-standards | vs frontend-design (structure) & design-taste (jugement) |
 | **design-taste** | Auditeur final | visual-critique, perceived-quality-audit, ai-artifact-detection, simplification, refinement, product-consistency, premium-saas-analysis | ui-components→ui, design-tokens→ui, screen-structure→frontend-design, test-screenshots→playwright, e2e-tests→playwright | observe ui & frontend-design | vs playwright : taste interprète, playwright produit |
 | **playwright** | Validation auto (prod SaaS) | e2e-tests, smoke-tests, critical-journey-validation, ui-regression, test-screenshots, responsive-testing, basic-a11y-testing, console-error-checks, network-checks | perceived-quality-audit→design-taste, ai-artifact-detection→design-taste, unit-testing→dev, user-flows→frontend-design | l'app construite | vs design-taste : mécanisme vs jugement |
+| **flo-project-audit** | Orchestrateur (méta) | project-audit, skill-orchestration, roadmap-prioritization, scorecard-evaluation | code-review→dev, visual-critique→design-taste, error-diagnosis→debug, e2e-tests→playwright, ux→frontend-design | tous (coordonne) | « audit » : project-audit = projet/orchestration, code-review = code, design-taste = visuel |
+| **flo-debug** | Diagnostic transverse | error-diagnosis, stack-trace-analysis, react-debugging, nextjs-debugging, supabase-debugging, dexie-debugging, performance-diagnosis | error-handling→dev, nextjs-performance→nextjs, unit-testing→dev, rls→supabase, e2e-tests→playwright | l'app + tous | « erreur » : debug = diagnostic runtime, dev = pattern ; « perf » : debug = pourquoi, nextjs = construire, seo = budget |
 
-## Les 6 frontières à risque — comment elles sont tranchées
+## Les frontières à risque — comment elles sont tranchées
 
 1. **frontend-design ↔ flo-ui** — *structure/intention* vs *implémentation*. frontend-design s'arrête au wireframe.
 2. **flo-ui ↔ design-taste** — ui **construit**, design-taste **juge**. La checklist anti-IA vit *uniquement* dans design-taste.
@@ -66,6 +80,9 @@
 4. **frontend-design ↔ flo-seo** — IA *produit* (navigation) vs sémantique *d'indexation* (headings, JSON-LD).
 5. **flo-medical ↔ flo-supabase** — *exigence* vs *mise en œuvre* (RLS/Edge).
 6. **flo-dev-standards ↔ flo-supabase** — sécurité *du code* vs sécurité *d'accès aux données*.
+7. **flo-dev-standards ↔ flo-debug** — `error-handling` = *pattern* de conception ; `error-diagnosis` = *diagnostic runtime*. `unit-testing` (dev) ≠ debug.
+8. **flo-debug ↔ flo-nextjs ↔ flo-seo** (performance) — debug = *pourquoi c'est lent* ; nextjs = *construire performant* ; seo = *budget/cible CWV*.
+9. **flo-project-audit ↔ flo-dev-standards ↔ design-taste** (« audit ») — project-audit = *projet/orchestration/roadmap* ; code-review = *code (change-level)* ; design-taste = *visuel*. L'orchestrateur **ne juge pas**, il route.
 
 ## Vérification
 

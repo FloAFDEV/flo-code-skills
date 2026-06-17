@@ -1,5 +1,6 @@
 ---
 name: frontend-design
+version: 1.0.0
 description: Conception produit et UX EN AMONT de l'implémentation. À activer pour décider l'expérience utilisateur, l'architecture d'information, les parcours, la hiérarchie de contenu, la structure et l'organisation des écrans, la priorisation de l'information et les wireframes conceptuels. Ne produit ni composants React, ni design system, ni tokens.
 owns:
   - ux

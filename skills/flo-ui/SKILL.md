@@ -1,5 +1,6 @@
 ---
 name: flo-ui
+version: 1.0.0
 description: Implémentation de l'interface — transforme les recommandations de frontend-design en code réel. À activer pour composants, Tailwind, responsive, accessibilité, animations, micro-interactions, design system, tokens et patterns d'interface. Possède le COMMENT (le code), pas la structure (frontend-design) ni le jugement esthétique (design-taste).
 owns:
   - ui-components

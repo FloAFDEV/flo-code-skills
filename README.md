@@ -3,7 +3,7 @@
 > Système universel de skills Claude Code de Florian — socle de référence orienté **production professionnelle**.
 > **Next.js 15+** · **Vite/React** · **Supabase** · **Offline-first (Dexie/IndexedDB)** · **SaaS & médical** · **UX/UI premium** · **SEO avancé** · **E2E Playwright**.
 
-10 skills **cohérents, non redondants et sans conflit d'autorité**, vérifiés automatiquement.
+12 skills **cohérents, non redondants et sans conflit d'autorité**, **versionnés** et vérifiés automatiquement.
 Objectif produit : des interfaces **crédibles, sobres, professionnelles** au niveau de **Linear, Stripe, Notion, Vercel** — et zéro rendu « qui sent l'IA ».
 
 ---
@@ -18,10 +18,12 @@ Objectif produit : des interfaces **crédibles, sobres, professionnelles** au ni
 
 ---
 
-## 📦 Les 10 skills
+## 📦 Les 12 skills
 
 | Skill | Phase | Domaine |
 |-------|-------|---------|
+| **flo-project-audit** | méta | Orchestrateur : audit projet, choix des skills, scorecard, feuille de route (aucune règle métier) |
+| **flo-debug** | transverse | Diagnostic : stack traces, bugs React/Next/Supabase/Dexie, problèmes de performance |
 | **flo-dev-standards** | socle | Qualité code : TS strict, archi, erreurs, refactoring, conventions, sécurité code, tests unitaires |
 | **flo-medical** | contrainte | Données santé : protection, séparation, logique métier, conformité (RGPD/HDS) — autorité max |
 | **flo-nextjs** | build | App Router, Server/Client Components, Metadata API, next/image, perf, patterns React Next |
@@ -40,6 +42,8 @@ Frontières détaillées : **[`docs/skill-boundaries.md`](./docs/skill-boundarie
 ## 🔀 Pipeline produit
 
 ```
+  Méta : flo-project-audit (orchestre, ne juge pas)   ·   Diagnostic : flo-debug (bug/perf)
+
   PLAN ─────────────▶ BUILD ─────────────────▶ AUDIT ─────────────▶ VALIDATION
   frontend-design     flo-nextjs / flo-ui      playwright           feature OK
   (UX, IA, structure) flo-supabase / offline   design-taste
@@ -79,7 +83,7 @@ Claude Code charge automatiquement tout dossier contenant un `SKILL.md` valide.
 | Vite/React offline | dev-standards · frontend-design · ui · offline · design-taste · playwright |
 | Landing / vitrine | dev-standards · nextjs · frontend-design · ui · seo · design-taste |
 
-`flo-dev-standards` est **toujours** présent : c'est le socle.
+`flo-dev-standards` est **toujours** présent (socle). `flo-project-audit` et `flo-debug` sont **universels** (orchestration & diagnostic) : recommandés sur tout projet.
 
 ---
 
@@ -104,9 +108,25 @@ touchant un `SKILL.md` (`.github/workflows/check-overlaps.yml`).
 
 ---
 
+## 🧮 Évaluer un projet (scorecard)
+
+`flo-project-audit` note un projet sur **10 dimensions** (Architecture, Qualité de code, UI, UX, SEO,
+Accessibilité, Performance, Sécurité, Offline, Qualité perçue) — chaque dimension étant jugée par le
+skill compétent, puis agrégée en feuille de route priorisée. Grille : **[`docs/scorecard.md`](./docs/scorecard.md)**.
+
+## 🏷️ Versionnement
+
+Chaque skill porte un champ `version` (SemVer) + un `CHANGELOG.md` dédié ; un `CHANGELOG.md` global
+agrège le tout. La procédure d'évolution **non cassante** (additif → dépréciation → MAJOR) est dans
+**[`docs/VERSIONING.md`](./docs/VERSIONING.md)**.
+
 ## 🗺️ Documents de référence
 
-- **[`docs/skill-boundaries.md`](./docs/skill-boundaries.md)** — cartographie complète, matrice, hiérarchie, vérification.
+- **[`docs/skill-boundaries.md`](./docs/skill-boundaries.md)** — cartographie, matrice, hiérarchie, vérification.
+- **[`docs/scorecard.md`](./docs/scorecard.md)** — grille d'audit 10 dimensions.
+- **[`docs/VERSIONING.md`](./docs/VERSIONING.md)** — versionnement & évolution.
+- **[`docs/AUDIT-PHASE2.md`](./docs/AUDIT-PHASE2.md)** — revue qualité & corrections.
 - **[`ARCHITECTURE.md`](./ARCHITECTURE.md)** — principes internes et carte d'interactions.
-- `tools/check-overlaps.ts` — vérificateur automatique de chevauchements.
+- **[`CHANGELOG.md`](./CHANGELOG.md)** — historique global.
+- `tools/check-overlaps.ts` — vérificateur automatique de chevauchements + versions.
 - `skills/*/SKILL.md` — règles détaillées par domaine.

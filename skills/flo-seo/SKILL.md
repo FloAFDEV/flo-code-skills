@@ -1,5 +1,6 @@
 ---
 name: flo-seo
+version: 1.0.0
 description: Stratégie de découvrabilité et SEO technique. À activer pour le CONTENU des metadata (titre/description), OpenGraph/Twitter Cards, données structurées JSON-LD, sitemap, robots, canonical/hreflang, sémantique d'indexation et budget Core Web Vitals. Possède le QUOI ; la mécanique de l'API Next appartient à flo-nextjs.
 owns:
   - seo-technical

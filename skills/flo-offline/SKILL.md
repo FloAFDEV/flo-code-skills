@@ -1,5 +1,6 @@
 ---
 name: flo-offline
+version: 1.0.0
 description: Architecture offline-first avec Dexie/IndexedDB. À activer pour le stockage local, la stratégie de synchronisation client/serveur, la file de mutations hors-ligne, la résolution de conflits, les stratégies de cache et l'UI optimiste persistée. Le serveur Supabase reste la source de vérité.
 owns:
   - indexeddb

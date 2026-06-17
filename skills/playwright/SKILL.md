@@ -1,5 +1,6 @@
 ---
 name: playwright
+version: 1.0.0
 description: Validation fonctionnelle automatisée niveau production SaaS avec Playwright. À activer pour tests E2E, smoke tests, parcours critiques, régressions UI, captures d'écran, responsive, accessibilité de base, vérification des erreurs console et du réseau. Étape avant validation finale d'une feature (Code → verify → playwright → design-taste → validation). Skill doctrinal : il ne juge pas l'esthétique (→ design-taste).
 owns:
   - e2e-tests

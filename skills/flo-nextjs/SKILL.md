@@ -1,5 +1,6 @@
 ---
 name: flo-nextjs
+version: 1.0.0
 description: Règles Next.js 15+ (App Router). À activer pour tout travail sur des routes, layouts, Server/Client Components, data fetching serveur, caching/revalidation, Server Actions, next/image, next/font, middleware et configuration de rendu. Possède la MÉCANIQUE de l'API Metadata (mais pas son contenu, qui appartient à flo-seo).
 owns:
   - app-router
@@ -36,6 +37,7 @@ excludes:
 - Style, composants, animations, tokens → `flo-ui`.
 - Policies/RLS/requêtes data → `flo-supabase`.
 - Conventions de code générales → `flo-dev-standards`.
+- **Diagnostiquer** un bug ou un problème de perf runtime (le *pourquoi*) → `flo-debug` (ici = *construire* du Next performant).
 
 ## 🎯 Scope (responsabilités)
 - **App Router** : `app/`, layouts, route groups, fichiers spéciaux.

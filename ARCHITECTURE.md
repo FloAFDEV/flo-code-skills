@@ -12,6 +12,8 @@ hiérarchie d'autorité vivent dans [`docs/skill-boundaries.md`](./docs/skill-bo
    appartient à exactement un skill. `tools/check-overlaps.ts` échoue sinon.
 2. **Autorité hiérarchique.** Quand des règles se contredisent, le skill le plus haut l'emporte
    (medical > supabase > dev-standards > nextjs > offline > frontend-design > ui > seo > design-taste > playwright).
+   Hors échelle : `flo-project-audit` (méta-coordinateur, ne juge pas) et `flo-debug` (diagnostic
+   transverse, défère le correctif au propriétaire) — ni l'un ni l'autre n'a d'autorité de domaine.
 3. **Pipeline par phase.** Les skills collaborent dans le temps : `PLAN → BUILD → AUDIT → VALIDATION`.
    C'est ce découpage temporel qui empêche les trois skills de design de se chevaucher.
 
@@ -31,6 +33,9 @@ hiérarchie d'autorité vivent dans [`docs/skill-boundaries.md`](./docs/skill-bo
 - **Cache** : offline = local/IndexedDB · nextjs = HTTP/`revalidate`.
 - **Captures** : playwright = produit · design-taste = interprète.
 - **Tests** : dev-standards = unitaire · playwright = E2E.
+- **Erreurs** : dev-standards = *pattern* (error-handling) · flo-debug = *diagnostic runtime*.
+- **Performance** (suite) : flo-debug = *pourquoi c'est lent* (diagnostic).
+- **« Audit »** : flo-project-audit = *projet/orchestration/roadmap* · dev-standards = *code (review)* · design-taste = *visuel*.
 
 > Détail exhaustif (Couvre / Ne couvre PAS / Dépendances / Risques) → `docs/skill-boundaries.md`.
 
@@ -39,6 +44,10 @@ hiérarchie d'autorité vivent dans [`docs/skill-boundaries.md`](./docs/skill-bo
 ## 3. Carte des interactions
 
 ```
+  flo-project-audit ──orchestre/sélectionne──▶ (tous les skills, séquencés par phase)
+        │ (méta, ne juge pas)
+        │        flo-debug ──diagnostique──▶ défère le correctif au propriétaire
+        ▼
         flo-medical ──contraint──▶ supabase · offline · nextjs · seo · playwright
             │ (autorité max, données santé)
             ▼
@@ -71,6 +80,7 @@ hiérarchie d'autorité vivent dans [`docs/skill-boundaries.md`](./docs/skill-bo
 ```markdown
 ---
 name: flo-xxx
+version: 1.0.0   # SemVer — voir docs/VERSIONING.md
 description: Quand activer ce skill (déclencheurs concrets).
 owns:        # responsabilités canoniques — uniques dans tout le repo
   - token-a

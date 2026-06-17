@@ -30,10 +30,13 @@ const SKILLS_DIR = join(ROOT, "skills");
 
 interface Skill {
   name: string;
+  version: string | null;
   file: string;
   owns: string[];
   excludes: string[];
 }
+
+const SEMVER = /^\d+\.\d+\.\d+$/;
 
 /** Extrait le bloc frontmatter (entre les deux premiers `---`). */
 function extractFrontmatter(content: string): string | null {
@@ -42,9 +45,10 @@ function extractFrontmatter(content: string): string | null {
 }
 
 /** Parse les champs simples dont on a besoin : `name`, `owns`, `excludes`. */
-function parseFrontmatter(fm: string): { name?: string; owns: string[]; excludes: string[] } {
+function parseFrontmatter(fm: string): { name?: string; version?: string; owns: string[]; excludes: string[] } {
   const lines = fm.split(/\r?\n/);
   let name: string | undefined;
+  let version: string | undefined;
   const owns: string[] = [];
   const excludes: string[] = [];
   let current: "owns" | "excludes" | null = null;
@@ -54,6 +58,12 @@ function parseFrontmatter(fm: string): { name?: string; owns: string[]; excludes
     const nameMatch = line.match(/^name:\s*(.+)$/);
     if (nameMatch) {
       name = nameMatch[1].trim().replace(/^["']|["']$/g, "");
+      current = null;
+      continue;
+    }
+    const versionMatch = line.match(/^version:\s*(.+)$/);
+    if (versionMatch) {
+      version = versionMatch[1].trim().replace(/^["']|["']$/g, "");
       current = null;
       continue;
     }
@@ -68,7 +78,7 @@ function parseFrontmatter(fm: string): { name?: string; owns: string[]; excludes
       else excludes.push(token);
     }
   }
-  return { name, owns, excludes };
+  return { name, version, owns, excludes };
 }
 
 function loadSkills(): Skill[] {
@@ -98,8 +108,8 @@ function loadSkills(): Skill[] {
       process.exitCode = 1;
       continue;
     }
-    const { name, owns, excludes } = parseFrontmatter(fm);
-    skills.push({ name: name ?? entry, file: `skills/${entry}/SKILL.md`, owns, excludes });
+    const { name, version, owns, excludes } = parseFrontmatter(fm);
+    skills.push({ name: name ?? entry, version: version ?? null, file: `skills/${entry}/SKILL.md`, owns, excludes });
   }
   return skills;
 }
@@ -114,6 +124,11 @@ function main(): void {
   for (const s of skills) {
     if (s.owns.length === 0) {
       critical.push(`${s.name} : aucune responsabilité 'owns' déclarée`);
+    }
+    if (!s.version) {
+      warnings.push(`${s.name} : champ 'version' absent du frontmatter`);
+    } else if (!SEMVER.test(s.version)) {
+      warnings.push(`${s.name} : version "${s.version}" non conforme à semver (X.Y.Z)`);
     }
     for (const token of s.owns) {
       const arr = ownersOf.get(token) ?? [];
@@ -143,7 +158,7 @@ function main(): void {
   // ---- Rapport ----
   console.log("\n═══ Cartographie des responsabilités ═══\n");
   for (const s of [...skills].sort((a, b) => a.name.localeCompare(b.name))) {
-    console.log(`▸ ${s.name}`);
+    console.log(`▸ ${s.name}  (v${s.version ?? "?"})`);
     console.log(`    owns     : ${s.owns.join(", ") || "—"}`);
     console.log(`    excludes : ${s.excludes.join(", ") || "—"}`);
   }

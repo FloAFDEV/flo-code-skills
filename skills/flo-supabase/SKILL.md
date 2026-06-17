@@ -1,5 +1,6 @@
 ---
 name: flo-supabase
+version: 1.0.0
 description: Règles d'accès aux données et de sécurité backend avec Supabase. À activer pour toute RLS, policy, Edge Function, migration SQL, gestion d'auth/session, ou accès base de données. Sécurité d'abord — la RLS n'est jamais contournée et le service_role ne fuit jamais côté client.
 owns:
   - rls

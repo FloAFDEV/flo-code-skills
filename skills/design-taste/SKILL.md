@@ -1,5 +1,6 @@
 ---
 name: design-taste
+version: 1.0.0
 description: Auditeur visuel FINAL. À activer APRÈS implémentation pour la critique visuelle, le contrôle de qualité perçue, la détection d'artefacts IA (gradients excessifs, badges inutiles, animations gadgets, cartes répétitives, CTA artificiels, composants template), la simplification, le raffinement et la cohérence produit, en visant le niveau des meilleurs SaaS (Linear, Stripe, Notion, Vercel). Produit des recommandations et un audit — il ne génère ni ne modifie l'interface.
 owns:
   - visual-critique
