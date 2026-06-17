@@ -1,0 +1,24 @@
+name: check-overlaps
+
+# Garantit qu'aucun skill ne marche sur les pieds d'un autre :
+# échoue si deux skills revendiquent la même responsabilité canonique.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    paths:
+      - "skills/**/SKILL.md"
+      - "tools/check-overlaps.ts"
+      - ".github/workflows/check-overlaps.yml"
+
+jobs:
+  check-overlaps:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Vérifier les chevauchements entre skills
+        run: npx --yes tsx tools/check-overlaps.ts
