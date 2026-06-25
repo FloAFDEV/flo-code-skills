@@ -10,8 +10,14 @@
 #   ./install.sh --list                 # liste les skills installés dans la cible
 #   ./install.sh --uninstall            # retire TOUS les skills flo-code de la cible
 #   ./install.sh --uninstall --only flo-seo         # retire un skill précis
+#   ./install.sh --link                 # mode RECOMMANDÉ : symlinks + auto-update (global)
+#                                       # → délègue à tools/skills-sync.sh + bootstrap.sh
 #
 # Options combinables : un chemin de projet peut précéder n'importe quelle option.
+#
+# 👉 Pour une installation GLOBALE robuste (symlinks, mise à jour auto via hook), préférer :
+#      ./bootstrap.sh        (clone canonique + liens + hook SessionStart)
+#    `install.sh` (copie) reste utile pour : Windows sans symlinks, ou skills dans UN projet précis.
 
 set -euo pipefail
 
@@ -28,6 +34,7 @@ while [[ $# -gt 0 ]]; do
     --only)      shift; while [[ $# -gt 0 && "$1" != --* ]]; do SELECTED+=("$1"); shift; done ;;
     --uninstall) ACTION="uninstall"; shift ;;
     --list)      ACTION="list"; shift ;;
+    --link)      exec "$(dirname "${BASH_SOURCE[0]}")/tools/skills-sync.sh" "${@:2}" ;;
     -h|--help)   sed -n '2,18p' "$0"; exit 0 ;;
     --*)         echo "Option inconnue : $1" >&2; exit 2 ;;
     *)           TARGET_BASE="$1/.claude"; shift ;;
