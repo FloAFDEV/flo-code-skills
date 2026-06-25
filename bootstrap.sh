@@ -46,7 +46,7 @@ echo "→ création des liens dans ~/.claude/skills…"
 FLO_SKILLS_REPO="$REPO" bash "$REPO/tools/skills-sync.sh" --link-only
 
 # 3. Hook SessionStart (merge non destructif via jq) -------------------------
-HOOK_CMD="bash \"$REPO/tools/skills-sync.sh\" --quiet 2>/dev/null || true"
+HOOK_CMD="bash \"$REPO/tools/skills-sync.sh\" --quiet --async 2>/dev/null || true"
 mkdir -p "$HOME/.claude"
 echo "→ installation du hook SessionStart dans $SETTINGS…"
 

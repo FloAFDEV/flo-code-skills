@@ -21,6 +21,7 @@
 # Usage :
 #   skills-sync.sh             # pull throttlé + (re)lien des symlinks
 #   skills-sync.sh --quiet     # idem, silencieux (utilisé par le hook)
+#   skills-sync.sh --async     # lien synchrone immédiat + pull EN ARRIÈRE-PLAN (hook : ne bloque pas)
 #   skills-sync.sh --force     # ignore le throttle, pull immédiat
 #   skills-sync.sh --link-only # ne pull pas, recrée seulement les symlinks
 #   skills-sync.sh --list      # liste les skills liés + leur version
@@ -34,15 +35,16 @@ URL="${FLO_SKILLS_URL:-https://github.com/FloAFDEV/flo-code-skills.git}"
 TTL="${FLO_SKILLS_TTL:-86400}"
 STAMP="$REPO/.last-sync"
 
-QUIET=0; FORCE=0; LINK_ONLY=0; ACTION="sync"
+QUIET=0; FORCE=0; LINK_ONLY=0; ASYNC=0; ACTION="sync"
 for arg in "$@"; do
   case "$arg" in
     --quiet)     QUIET=1 ;;
     --force)     FORCE=1 ;;
     --link-only) LINK_ONLY=1 ;;
+    --async)     ASYNC=1 ;;
     --list)      ACTION="list" ;;
     --unlink)    ACTION="unlink" ;;
-    -h|--help)   sed -n '2,30p' "$0"; exit 0 ;;
+    -h|--help)   sed -n '2,31p' "$0"; exit 0 ;;
   esac
 done
 
@@ -119,7 +121,16 @@ case "$ACTION" in
     done < <(managed_skills)
     ;;
   sync)
-    [[ $LINK_ONLY -eq 1 ]] || do_pull
-    do_link
+    if [[ $LINK_ONLY -eq 1 ]]; then
+      do_link
+    elif [[ $ASYNC -eq 1 ]]; then
+      # Chemin du hook : lien tout de suite (rapide, requis avant la découverte des skills),
+      # puis pull détaché — fds redirigés pour ne PAS retenir le pipe du hook → démarrage non bloqué.
+      do_link
+      ( do_pull ) >/dev/null 2>&1 &
+    else
+      do_pull
+      do_link
+    fi
     ;;
 esac
