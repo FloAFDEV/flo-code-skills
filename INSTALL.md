@@ -19,6 +19,41 @@ cd flo-code-skills
 
 ---
 
+## ⭐ 0bis. Installation GLOBALE recommandée (symlinks + auto-update)
+
+Pour que **tous** tes projets voient tes skills sans config par repo, et **sans jamais recopier
+à la main**, lance le bootstrap une seule fois :
+
+```bash
+./bootstrap.sh
+# ou, sans cloner d'abord :
+curl -fsSL https://raw.githubusercontent.com/FloAFDEV/flo-code-skills/main/bootstrap.sh | bash
+```
+
+Ce qu'il met en place :
+
+1. **Un clone unique** dans `~/.claude/flo-code-skills` (la source de vérité locale).
+2. **Des liens symboliques** `~/.claude/skills/<skill>` → clone. Claude Code les charge nativement
+   pour tous les projets et tous les agents.
+3. **Un hook `SessionStart`** dans `~/.claude/settings.json` qui fait un `git pull` *throttlé*
+   (1×/jour) à chaque session → les skills restent à jour tout seuls.
+
+**Pourquoi c'est mieux que la copie** : un seul `git pull` met à jour *tous* les projets d'un coup ;
+aucune recopie ; et comme c'est un simple clone local, ça **ne dépend d'aucun scope GitHub** (contrairement
+au mécanisme plugin/marketplace). Détails → [`docs/GLOBAL-SETUP.md`](./docs/GLOBAL-SETUP.md).
+
+```bash
+# Vérifier / forcer une MAJ / délier
+bash ~/.claude/flo-code-skills/tools/skills-sync.sh --list
+bash ~/.claude/flo-code-skills/tools/skills-sync.sh --force   # pull immédiat
+bash ~/.claude/flo-code-skills/tools/skills-sync.sh --unlink  # retirer les liens
+```
+
+> Les sections **1–6** ci-dessous décrivent l'alternative par **copie** (`install.sh`), utile pour :
+> Windows sans symlinks, ou installer des skills dans **un seul** projet (`./install.sh /chemin/projet`).
+
+---
+
 ## 1. macOS
 
 ```bash
