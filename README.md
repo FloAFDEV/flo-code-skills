@@ -2,7 +2,7 @@
 
 # flo-code-skills
 
-> Florian's universal Claude Code skills system — a reference baseline built for **professional production**.
+> Florent's universal Claude Code skills system (AFDEV) — a reference baseline built for **professional production**.
 > **Next.js 15+** · **Vite/React** · **Supabase** · **Offline-first (Dexie/IndexedDB)** · **SaaS & medical** · **premium UX/UI** · **advanced SEO** · **Playwright E2E**.
 
 12 skills that are **coherent, non-redundant and free of authority conflicts**, **versioned** and automatically verified.
