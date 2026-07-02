@@ -1,7 +1,7 @@
 ---
 name: playwright
-version: 1.0.0
-description: Validation fonctionnelle automatisée niveau production SaaS avec Playwright. À activer pour tests E2E, smoke tests, parcours critiques, régressions UI, captures d'écran, responsive, accessibilité de base, vérification des erreurs console et du réseau. Étape avant validation finale d'une feature (Code → verify → playwright → design-taste → validation). Skill doctrinal : il ne juge pas l'esthétique (→ design-taste).
+version: 2.0.0
+description: Validation fonctionnelle automatisée avec Playwright. À activer pour tests E2E, smoke tests, parcours critiques, régressions UI, captures d'écran, responsive, accessibilité de base et vérification des erreurs console/réseau. Étape ante-validation dans le pipeline — produit des faits, ne juge pas l'esthétique.
 owns:
   - e2e-tests
   - smoke-tests
@@ -22,70 +22,39 @@ excludes:
 # playwright
 
 > Phase AUDIT (fonctionnel). Prouver que les parcours marchent, et qu'ils continuent de marcher.
-> Il **produit** les vérifications et les captures ; `design-taste` en **juge** la qualité visuelle.
 
-## ▶️ When To Invoke
-- **Avant la validation finale** d'une feature (étape `playwright` du pipeline).
-- Écrire/organiser des **tests E2E**, **smoke tests**, valider un **parcours critique**.
-- Mettre en place une **régression UI** (snapshots) ou des tests **responsive**.
-- Vérifier **a11y de base**, **erreurs console**, **appels réseau** sur un parcours.
+## Objectif
 
-## ⏹️ When NOT To Invoke
-- Juger si l'UI est « belle » / « template » / « IA » → `design-taste`.
-- Tests **unitaires** / logique pure → `flo-dev-standards`.
-- *Définir* les parcours (ici on les **exécute**) → `frontend-design`.
+Valider automatiquement que les parcours critiques fonctionnent sur l'app réelle et détecter les régressions. S'active avant la validation finale d'une feature, pour écrire des tests E2E, mettre en place une régression visuelle, ou vérifier la santé runtime d'un parcours (console, réseau, a11y de base).
 
-## 🎯 Scope (responsabilités)
-- **Tests E2E** et **smoke tests** sur l'app réelle.
-- **Validation des parcours critiques** (auth, action métier centrale, paiement…).
-- **Régression UI** par snapshots ciblés.
-- **Captures d'écran** (matériau d'audit pour `design-taste`).
-- **Responsive** (viewports clés), **a11y de base** automatisable.
-- **Vérification des erreurs console** et des **appels réseau** (statuts, échecs).
+## Périmètre
 
-## 🚫 Hors-scope (délégué)
-- **Jugement esthétique** des captures → `design-taste`.
-- **Tests unitaires / logique pure** → `flo-dev-standards`.
-- **Définition des parcours** → `frontend-design`.
-- **Données réelles dans les fixtures** → interdit par `flo-medical` (fixtures anonymisées).
+**Possède :** tests E2E et smoke tests, validation des parcours critiques, régression UI par snapshots, captures d'écran (matériau pour `design-taste`), tests responsive (viewports clés), a11y de base automatisable, vérification des erreurs console et des appels réseau.
 
-## ✅ Règles strictes
+**Délègue :** jugement esthétique des captures → `design-taste` · tests unitaires et logique pure → `flo-dev-standards` · définition des parcours à couvrir → `frontend-design`.
 
-### Couverture
-1. **Parcours critiques d'abord**, pas l'exhaustif cosmétique.
-2. **Smoke test** rapide sur chaque déploiement : l'app démarre, les routes clés répondent, pas d'erreur fatale.
-3. Chaque test = **un scénario utilisateur** avec un résultat observable.
-4. Couvrir les **états** prévus par `frontend-design` : succès, vide, erreur, cas limites.
+## Contraintes
 
-### Robustesse
-5. **Sélecteurs résilients** : `getByRole`/`getByLabel`/`data-testid` — jamais de sélecteur lié au style (classes Tailwind, ordre DOM).
-6. **Attentes explicites** (auto-waiting / `expect`), **jamais de `waitForTimeout` arbitraire**.
-7. Tests **isolés et idempotents** : état créé/nettoyé par le test, indépendants de l'ordre, rejouables.
-8. **Données anonymisées** (exigence `flo-medical`) ; secrets via env.
+**Priorité :** parcours critiques d'abord (auth, action métier centrale, paiement). Smoke test minimal sur chaque déploiement. Pas de couverture exhaustive des cas cosmétiques.
 
-### Régression UI, responsive & santé runtime
-9. Snapshots visuels **déterministes** (masquer dates/données dynamiques) ; nommés et rangés pour `design-taste`.
-10. Tester les **viewports clés** (mobile / tablette / desktop) sur les écrans à risque.
-11. **A11y de base** : présence des rôles/labels, navigation clavier sur les parcours critiques.
-12. **Erreurs console** : aucun `error`/`warning` inattendu pendant un parcours → échec.
-13. **Réseau** : vérifier statuts attendus, absence de 4xx/5xx non gérés, pas d'appel manquant/dupliqué.
+**Sélecteurs :** `getByRole`, `getByLabel`, `data-testid` uniquement. Jamais de sélecteur basé sur les classes CSS, l'ordre DOM ou la structure du markup — ils cassent à chaque refactor visuel.
 
-### CI
-14. Suite **intégrable en CI**, rapide et fiable ; échec **actionnable** (trace, screenshot, vidéo).
-15. Position dans le pipeline : `Code → verify → playwright → design-taste → validation finale`.
+**Attentes :** auto-waiting et `expect` Playwright uniquement. Jamais de `waitForTimeout` fixe — c'est un test flaky en attente d'exploser.
 
-## ⛔ Anti-règles (jamais)
-- ❌ Jamais juger si une UI est « belle » ou « template » (→ `design-taste`).
-- ❌ Jamais de `waitForTimeout` fixe ni de sélecteur fragile basé sur le style.
-- ❌ Jamais de vraie donnée patient/PII dans les fixtures ou les captures (→ `flo-medical`).
-- ❌ Jamais de test dépendant de l'ordre d'exécution.
-- ❌ Jamais remplacer les tests unitaires : Playwright couvre l'E2E.
+**Isolation :** chaque test crée et nettoie son propre état. Indépendant de l'ordre d'exécution. Rejouable à l'infini.
 
-## 🥇 Priorité
-Niveau **10**. Skill de **validation** : il **rapporte** des faits (passe/échoue, régression) et ne dicte ni le design ni l'architecture. Un échec signale un problème ; la correction revient au skill propriétaire du domaine.
+**Données :** anonymisées (exigence de `flo-medical`) — jamais de vraie donnée patient dans les fixtures ou captures. Secrets via variables d'environnement.
 
-## 🔗 Interactions
-- **Exécute** les parcours définis par `frontend-design`.
-- **Produit** les captures consommées par `design-taste`.
-- **Valide** l'implémentation de `flo-ui`/`flo-nextjs`/`flo-supabase`.
-- **Obéit** à `flo-medical` (fixtures anonymisées) ; **applique** `flo-dev-standards`.
+**Santé runtime :** une erreur `console.error` inattendue pendant un parcours fait échouer le test. Vérifier les statuts réseau attendus et l'absence de 4xx/5xx non gérés.
+
+## Autorité
+
+Niveau 10 — validation. Rapporte des faits (passe/échoue, régression) sans dicter le design ni l'architecture. Un échec signale un problème ; la correction revient au skill propriétaire du domaine.
+
+## Définition de terminé
+
+Les parcours critiques passent. Aucune régression sur les snapshots existants. Aucune erreur console inattendue pendant les parcours. La suite est intégrée en CI avec des échecs actionnables (trace, screenshot, vidéo).
+
+## Références
+
+Exécute les parcours définis par `frontend-design`. Produit les captures consommées par `design-taste`. Valide l'implémentation de `flo-ui`, `flo-nextjs`, `flo-supabase`. Obéit à `flo-medical` (données anonymisées). Applique `flo-dev-standards`. Position dans le pipeline : `Code → verify → playwright → design-taste → validation finale`.

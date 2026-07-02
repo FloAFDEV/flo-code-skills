@@ -1,7 +1,7 @@
 ---
 name: flo-seo
-version: 1.0.0
-description: Stratégie de découvrabilité et SEO technique. À activer pour le CONTENU des metadata (titre/description), OpenGraph/Twitter Cards, données structurées JSON-LD, sitemap, robots, canonical/hreflang, sémantique d'indexation et budget Core Web Vitals. Possède le QUOI ; la mécanique de l'API Next appartient à flo-nextjs.
+version: 2.0.0
+description: Stratégie de découvrabilité et SEO technique. À activer pour le contenu des metadata (titre/description), OpenGraph/Twitter Cards, données structurées JSON-LD, sitemap, robots, canonical/hreflang et budget Core Web Vitals. Possède le QUOI ; la mécanique Next appartient à flo-nextjs.
 owns:
   - seo-technical
   - opengraph
@@ -21,68 +21,38 @@ excludes:
 
 > Comment on est trouvé et partagé. Le contenu et la sémantique d'indexation.
 
-## ▶️ When To Invoke
-- Rédiger le **contenu** des metadata (`title`, description) d'une page.
-- Définir **OpenGraph / Twitter Cards**, images de partage.
-- Écrire des **données structurées JSON-LD**, gérer **sitemap**, **robots**, canonical/hreflang.
-- Décider la **structure des headings** pour le crawl, le `alt` orienté pertinence, le budget CWV.
+## Objectif
 
-## ⏹️ When NOT To Invoke
-- *Mécanique* de l'API Metadata (`generateMetadata`, `sitemap.ts`) → `flo-nextjs`.
-- Optimisation technique images/polices → `flo-nextjs`.
-- Style, a11y, animations → `flo-ui`.
-- Décider si une page peut être publique → `flo-supabase`/`flo-medical`.
+Définir le contenu des metadata, la structure d'indexation et la stratégie de découvrabilité. S'active pour rédiger les titres et descriptions, configurer OpenGraph, produire des données structurées JSON-LD, gérer sitemap et robots, et poser les Core Web Vitals comme objectif de performance.
 
-## 🎯 Scope (responsabilités)
-- **Contenu des metadata** : `<title>`, meta description par page.
-- **OpenGraph / Twitter Cards** : valeurs, images de partage.
-- **Données structurées JSON-LD**.
-- **`sitemap.xml`, `robots.txt`, canonical, hreflang**.
-- **SEO technique** : headings (h1 unique), maillage interne, `alt` orienté pertinence, budget Core Web Vitals (cible).
+## Périmètre
 
-## 🚫 Hors-scope (délégué)
-- **Mécanique** de l'API Metadata → `flo-nextjs`.
-- **Optimisation technique des images/polices** → `flo-nextjs`.
-- **Style, animations, a11y** → `flo-ui`.
-- **Décision de rendre une page publique** → `flo-supabase` (sécurité) / `flo-medical` (santé).
+**Possède :** contenu de `<title>` et meta description par page, OpenGraph et Twitter Cards, données structurées JSON-LD, `sitemap.xml`, `robots.txt`, canonical, hreflang, structure des headings pour le crawl (`<h1>` unique, hiérarchie continue), budget CWV.
 
-## ✅ Règles strictes
+**Délègue :** mécanique de l'API Metadata Next.js (`generateMetadata`, `sitemap.ts`) → `flo-nextjs` · optimisation technique des images et polices → `flo-nextjs` · style, a11y, animations → `flo-ui` · décision d'indexabilité d'une page protégée → `flo-supabase`/`flo-medical`.
 
-### Metadata de contenu
-1. **`title` unique** (≤ ~60 car.) et **description** unique (~150–160 car.) par page indexable.
-2. Template de titre cohérent au layout (`%s | Marque`).
-3. **`canonical`** systématique ; `hreflang` si multilingue.
+## Contraintes
 
-### Partage social
-4. **OpenGraph complet** : `og:title/description/image` (1200×630), `og:url`, `og:type`. Twitter `summary_large_image`.
-5. Image OG par page significative ; fallback de marque sinon.
+**Metadata :** titre unique ≤ ~60 caractères et description unique ~150–160 caractères par page indexable. Template cohérent au layout (`%s | Marque`). Canonical systématique.
 
-### Données structurées
-6. **JSON-LD** adapté au type de page, valide schema.org, cohérent avec le contenu visible.
-7. Pas de structured data trompeuse ou invisible (risque de pénalité).
+**OpenGraph :** `og:title`, `og:description`, `og:image` (1200×630), `og:url`, `og:type` complets. Twitter `summary_large_image`. Image OG dédiée par page significative — fallback de marque sinon.
 
-### Crawl & sémantique
-8. **Un seul `<h1>` par page**, hiérarchie de headings continue.
-9. `sitemap.xml` à jour, `robots.txt` cohérent ; **noindex** explicite sur les pages non publiques.
-10. URLs propres, stables (`kebab-case`) ; 301 sur changement d'URL.
-11. `alt` **descriptif et pertinent** pour les images de contenu (coordonné avec l'a11y de `flo-ui`).
+**Données structurées :** JSON-LD valide schema.org, cohérent avec le contenu visible. Pas de structured data invisible ou trompeuse (risque de pénalité).
 
-### Performance SEO
-12. Budget **Core Web Vitals** (LCP < 2.5s, CLS < 0.1, INP < 200ms) comme objectif ; la *réalisation* est exécutée par `flo-nextjs`.
+**Indexabilité :** pages avec données patient → noindex + authentifiées (exigence de `flo-medical` — inviolable). Sitemap cohérent avec les pages effectivement publiques. `robots.txt` sans contradiction avec le sitemap.
 
-## ⛔ Anti-règles (jamais)
-- ❌ Jamais exiger qu'une page soit indexable si `flo-supabase`/`flo-medical` la protège — **noindex + auth gagnent**.
-- ❌ Jamais réécrire la mécanique de l'API Next.
-- ❌ Jamais de keyword stuffing, structured data invisible ou cloaking.
-- ❌ Jamais imposer du style ou des animations (→ `flo-ui`).
-- ❌ Jamais indexer comptes, dashboards ou contenus sensibles.
+**CWV :** LCP < 2.5s, CLS < 0.1, INP < 200ms comme objectif de conception. La réalisation technique est déléguée à `flo-nextjs`.
 
-## 🥇 Priorité
-Niveau **8**. Cède devant tous les skills de sécurité/correction/structure. Le SEO ne justifie jamais d'affaiblir la sécurité, l'a11y ou la correction du rendu.
+Le SEO ne justifie jamais d'affaiblir la sécurité, l'accessibilité ou la conformité médicale.
 
-## 🔗 Interactions
-- **Fournit** les valeurs de metadata à `flo-nextjs`.
-- **Partage le DOM** avec `flo-ui` : seo = sémantique + metadata ; ui = style + a11y.
-- **Cadré** par `frontend-design` (l'IA produit influence headings/maillage).
-- **Soumis** à `flo-supabase`/`flo-medical` pour l'indexabilité.
-- **Applique** `flo-dev-standards`.
+## Autorité
+
+Niveau 8. Cède devant tous les skills de sécurité, conformité, correction et structure. `flo-supabase`/`flo-medical` tranchent sur l'indexabilité.
+
+## Définition de terminé
+
+Chaque page indexable a un titre et une description uniques dans les limites de longueur. OpenGraph est complet avec image. Les données structurées sont valides selon schema.org. Le sitemap est cohérent avec les pages publiques. Les pages sensibles sont en noindex.
+
+## Références
+
+Fournit les valeurs de metadata à `flo-nextjs` (qui les expose via `generateMetadata`). Partage le DOM avec `flo-ui` (seo = sémantique et metadata ; ui = style et a11y — coordonner le `alt` des images). Cadré par `frontend-design` (l'architecture des écrans influence headings et maillage). Soumis à `flo-supabase`/`flo-medical` pour l'indexabilité.

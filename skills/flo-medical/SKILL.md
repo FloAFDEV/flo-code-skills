@@ -1,7 +1,7 @@
 ---
 name: flo-medical
-version: 1.0.0
-description: Contrainte métier pour applications médicales (PatientHub et apps de santé). À activer dès qu'une donnée de santé, patient ou identifiante est manipulée — protection des données sensibles, séparation des données, logique métier santé et contraintes réglementaires (RGPD/HDS). AUTORITÉ MAXIMALE : ses exigences l'emportent sur tout autre skill. Il fixe le QUOI ; l'implémentation technique est déléguée.
+version: 2.0.0
+description: Contrainte métier pour applications médicales (PatientHub et apps de santé). À activer dès qu'une donnée de santé, patient ou identifiante est manipulée. Autorité maximale — ses exigences l'emportent sur tout autre skill. Fixe le QUOI ; l'implémentation technique est déléguée.
 owns:
   - medical-apps
   - sensitive-data-protection
@@ -18,67 +18,45 @@ excludes:
 # flo-medical
 
 > La conformité ne se négocie pas. Autorité maximale sur la donnée de santé.
-> Ce skill **fixe des exigences** ; il ne réécrit pas la technique des autres skills.
 
-## ▶️ When To Invoke
-- Toute manipulation de **donnée de santé, patient ou identifiante (PII)**.
-- Conception d'une **logique métier santé** (dossier, soignant, consentement de soin).
-- Décider **où vivent et comment sont protégées** des données sensibles.
-- Toute question de **conformité** (RGPD, HDS, rétention, audit, consentement).
+## Objectif
 
-## ⏹️ When NOT To Invoke
-- Projet **sans aucune donnée sensible/santé** (alors medical est inerte).
-- *Implémenter* RLS/chiffrement/crypto → `flo-supabase` / `flo-offline` (medical exige, ne code pas).
-- Style, SEO, structure d'écran : medical ne s'en mêle que pour interdire l'exposition de données.
+Garantir que les applications de santé respectent les exigences réglementaires (RGPD, HDS) et protègent les données patient à chaque couche du système. S'active dès qu'une donnée de santé, patient ou identifiante (PII) entre en jeu — conception, implémentation ou revue. Inerte sur les projets sans données sensibles.
 
-## 🎯 Scope (responsabilités)
-- **Classification de sensibilité** : santé / identifiante (PII) / technique.
-- **Protection des données sensibles** (exigence : chiffrement au repos, en transit, en local).
-- **Séparation des données** : cloisonnement identité ↔ données de santé, pseudonymisation.
-- **Logique métier santé** propre au domaine.
-- **Contraintes réglementaires** : RGPD, HDS, base légale, droits, rétention, audit.
+## Périmètre
 
-## 🚫 Hors-scope (délégué — exécution technique)
-- **RLS / Edge / chiffrement serveur** → `flo-supabase`.
-- **Chiffrement & rétention locale IndexedDB** → `flo-offline`.
-- **Protection technique des routes (auth, no-cache)** → `flo-nextjs`.
-- **noindex des pages sensibles** → `flo-seo`. **Fixtures/captures sans vraie donnée** → `playwright`.
+**Possède :** classification de la sensibilité des données, exigences de protection (chiffrement, accès minimal), séparation identité/données de santé, logique métier santé (dossier, soignant, consentement de soin), conformité réglementaire (RGPD/HDS, base légale, consentement, rétention, audit).
 
-## ✅ Règles strictes
+**Délègue :** RLS et chiffrement serveur → `flo-supabase` · chiffrement local IndexedDB → `flo-offline` · protection des routes et authentification → `flo-nextjs` · noindex des pages sensibles → `flo-seo` · fixtures anonymisées dans les tests → `playwright`. Medical fixe les exigences ; les autres skills les exécutent.
 
-### Classification & séparation
-1. **Classer toute donnée** avant traitement ; la classe détermine les protections.
-2. **Minimisation** : collecter/transmettre/stocker/afficher le strict nécessaire.
-3. **Séparer identité et données de santé** quand c'est possible (identifiant interne pseudonyme).
+## Contraintes
 
-### Protection (exigences imposées aux autres skills)
-4. Donnée santé/PII = chiffrée **en transit, au repos et en local** (→ supabase/offline).
-5. Accès au **moindre privilège**, vérifié côté serveur (→ supabase : RLS systématique).
-6. **Aucune donnée santé/PII** dans logs, erreurs client, URLs, analytics, metadata, fixtures ni captures. Pages avec données patient = **noindex + authentifiées** (→ seo/nextjs/playwright).
+**Classification :** toute donnée est classée avant traitement (santé / identifiante / technique). En cas de doute sur la sensibilité d'une donnée dans un contexte santé, la traiter comme sensible.
 
-### Conformité & gouvernance
-7. **Base légale et consentement** explicites, traçables, révocables.
-8. **Audit log** des accès/modifications (qui, quoi, quand), sans contenu superflu.
-9. **Rétention définie + purge** automatique ; droit à l'effacement et à la portabilité.
-10. **Anonymisation irréversible** pour tout usage secondaire (stats, démo, tests) — jamais de vraie donnée patient hors production.
+**Minimisation :** collecter, transmettre, stocker et afficher le strict nécessaire — pas plus.
 
-### Posture
-11. **Privacy & security by design / by default**.
-12. En contexte applicatif santé, en cas de doute sur la sensibilité d'une donnée : **traiter comme sensible** et signaler (ne s'applique pas hors domaine santé).
+**Séparation :** dissocier identité et données de santé quand c'est possible, via un identifiant interne pseudonyme.
 
-## ⛔ Anti-règles (jamais)
-- ❌ Jamais de vraie donnée patient hors production (dev, test, démo, capture, ticket).
-- ❌ Jamais de donnée santé/PII dans logs, erreurs, URLs, analytics, metadata, fixtures.
-- ❌ Jamais stocker de la donnée santé en clair (serveur ou IndexedDB).
-- ❌ Jamais indexer/rendre publique une page contenant des données patient.
-- ❌ Jamais affaiblir une protection pour la perf, l'UX, le design, le SEO ou la rapidité de dev.
-- ❌ Jamais implémenter soi-même RLS/chiffrement bas niveau (medical exige, les autres exécutent).
+**Protection (exigences imposées aux autres skills) :**
+- Données santé/PII chiffrées en transit, au repos et en local (→ `flo-supabase`, `flo-offline`).
+- Accès au moindre privilège, vérifié côté serveur — RLS systématique sans exception (→ `flo-supabase`).
+- Zéro donnée santé/PII dans logs, erreurs client, URLs, analytics, metadata, fixtures ou captures.
+- Pages avec données patient : noindex + authentifiées (→ `flo-seo`, `flo-nextjs`, `playwright`).
 
-## 🥇 Priorité
-Niveau **1 — autorité maximale.** En cas de conflit avec **n'importe quel** skill, medical l'emporte.
+**Conformité :**
+- Base légale et consentement explicites, traçables, révocables.
+- Audit log des accès et modifications (qui, quoi, quand) — sans contenu superflu.
+- Rétention définie avec purge automatique ; droit à l'effacement et à la portabilité implémentés.
+- Tout usage secondaire (stats, démo, tests) → anonymisation irréversible. Jamais de vraie donnée patient hors production.
 
-## 🔗 Interactions
-- **Contraint** : supabase, offline, nextjs, seo, playwright, et les skills design (pas de vraie donnée dans les maquettes).
-- **N'exécute pas** la technique : il pose l'exigence, les autres l'implémentent.
-- **S'appuie sur** `flo-dev-standards` pour la rigueur du code de conformité.
-- Activé **automatiquement** dès qu'une donnée de santé entre en jeu.
+## Autorité
+
+Niveau 1 — autorité maximale. En conflit avec n'importe quel autre skill, medical l'emporte. Aucune contrainte de performance, d'UX, de design ou de délai ne justifie d'y déroger.
+
+## Définition de terminé
+
+Toute donnée sensible est classée. Les protections (chiffrement, RLS, noindex, anonymisation des tests) sont en place et vérifiables. La base légale et la durée de rétention sont documentées.
+
+## Références
+
+Contraint activement : `flo-supabase`, `flo-offline`, `flo-nextjs`, `flo-seo`, `playwright`. S'appuie sur `flo-dev-standards` pour la rigueur du code de conformité.

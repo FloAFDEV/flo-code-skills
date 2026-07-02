@@ -1,7 +1,7 @@
 ---
 name: flo-project-audit
-version: 1.0.0
-description: Orchestrateur et auditeur de projet. À activer pour analyser un projet complet, décider quels skills invoquer, évaluer le projet via la scorecard (10 dimensions) et produire une feuille de route priorisée. Il ne possède AUCUNE règle métier : il coordonne les autres skills et délègue chaque jugement à son propriétaire.
+version: 2.0.0
+description: Orchestrateur et auditeur de projet. À activer pour analyser un projet complet, décider quels skills invoquer, évaluer le projet via la scorecard (10 dimensions) et produire une feuille de route priorisée. Ne possède aucune règle métier — coordonne et délègue.
 owns:
   - project-audit
   - skill-orchestration
@@ -19,57 +19,36 @@ excludes:
 
 > Le chef d'orchestre. Il ne joue d'aucun instrument : il décide qui joue, quand, et dans quel ordre.
 
-## ▶️ When To Invoke
-- **Analyser un projet complet** (onboarding, reprise, revue globale, due diligence).
-- Décider **quels skills invoquer** pour une tâche transverse et dans quel ordre.
-- Produire une **feuille de route priorisée** (quick wins → chantiers de fond).
-- Lancer une **évaluation scorecard** (10 dimensions) et l'agréger.
+## Objectif
 
-## ⏹️ When NOT To Invoke
-- Une tâche **mono-domaine** où le skill propriétaire suffit (ne pas s'interposer inutilement).
-- Émettre un **jugement métier** (code, visuel, sécurité…) → c'est le skill propriétaire qui tranche, pas l'orchestrateur.
-- Diagnostiquer un bug précis → `flo-debug`. Critiquer le visuel → `design-taste`.
+Analyser un projet dans son ensemble, sélectionner et séquencer les skills pertinents, agréger une évaluation scorecard (10 dimensions) et produire une feuille de route priorisée. S'active pour les audits complets, les reprises de projet, les due diligence ou les tâches transverses impliquant plusieurs domaines.
 
-## 🎯 Scope (responsabilités)
-- **Audit de projet** : cartographier stack, surfaces, dettes, risques (en déléguant l'analyse fine).
-- **Orchestration de skills** : sélectionner et séquencer les skills pertinents pour une tâche.
-- **Priorisation de feuille de route** : impact × effort, ordre d'exécution, dépendances.
-- **Évaluation scorecard** : collecter un score par dimension auprès du skill compétent et agréger (voir `docs/scorecard.md`).
+## Périmètre
 
-## 🚫 Hors-scope (délégué — TOUT le métier)
-- **Qualité/correction du code** → `flo-dev-standards`. **Diagnostic de bug** → `flo-debug`.
-- **Rendu/perf Next** → `flo-nextjs`. **Données/sécurité** → `flo-supabase` / `flo-medical`.
-- **Offline** → `flo-offline`. **SEO** → `flo-seo`. **UX** → `frontend-design`.
-- **UI/a11y** → `flo-ui`. **Qualité perçue** → `design-taste`. **E2E** → `playwright`.
+**Possède :** cartographie de la stack et des surfaces, orchestration et séquençage des skills, priorisation de la feuille de route, collecte et agrégation des scores scorecard.
 
-## ✅ Règles strictes
+**Délègue :** tout jugement de domaine au skill propriétaire — qualité du code → `flo-dev-standards` · bugs → `flo-debug` · rendu/perf → `flo-nextjs` · données/sécurité → `flo-supabase`/`flo-medical` · offline → `flo-offline` · SEO → `flo-seo` · UX → `frontend-design` · UI/a11y → `flo-ui` · qualité perçue → `design-taste` · E2E → `playwright`.
 
-### Orchestration
-1. **Ne jamais émettre de jugement de domaine soi-même** : router vers le skill propriétaire et rapporter sa conclusion.
-2. Sélectionner **le minimum de skills** nécessaires à la tâche — pas d'invocation « au cas où » (anti-surcharge).
-3. Respecter la **hiérarchie d'autorité** : si deux skills divergent, appliquer l'ordre (`docs/skill-boundaries.md`), ne pas arbitrer arbitrairement.
-4. Séquencer selon le **pipeline** : `frontend-design → build → playwright → design-taste`, et `flo-debug` à la demande.
+## Contraintes
 
-### Audit & roadmap
-5. Un audit = **état des lieux par dimension** (scorecard) + **constats** (chacun attribué à un skill) + **feuille de route**.
-6. Prioriser par **impact × effort** ; séparer *quick wins* (bas effort, fort impact) des *chantiers* ; expliciter les dépendances.
-7. Chaque item de roadmap nomme **le skill responsable** de l'exécution et un critère de « fait ».
-8. Signaler les **risques bloquants** (sécurité, conformité) en tête, quel que soit leur effort.
+Ne jamais émettre de jugement de domaine soi-même — router vers le skill propriétaire et rapporter sa conclusion telle quelle.
 
-## ⛔ Anti-règles (jamais)
-- ❌ Jamais définir ou dupliquer une règle métier (code, UI, SEO, sécurité…) — il **délègue**.
-- ❌ Jamais trancher un conflit entre skills hors de la hiérarchie d'autorité établie.
-- ❌ Jamais invoquer tous les skills par défaut : sélection minimale, ciblée.
-- ❌ Jamais produire une feuille de route sans propriétaire ni critère de complétion par item.
+Sélectionner le minimum de skills nécessaires pour la tâche. Pas d'invocation « au cas où ».
 
-## 🥇 Priorité
-**Méta-skill (niveau 0 — coordinateur).** Il se place *au-dessus du flux* mais **n'a aucune autorité de domaine** : il orchestre et défère. En cas de conflit de contenu, ce sont les niveaux 1–10 qui tranchent, jamais l'orchestrateur.
+Respecter la hiérarchie d'autorité des skills (`docs/skill-boundaries.md`) sans l'arbitrer — en cas de conflit, appliquer l'ordre établi, ne pas trancher.
 
-## 🔗 Interactions
-- **Invoque et séquence** les 11 autres skills selon la tâche.
-- **Consomme** la scorecard (`docs/scorecard.md`) et les conclusions de chaque skill.
-- **S'appuie sur** `flo-debug` pour les diagnostics et `design-taste`/`playwright` pour l'audit qualité.
-- **Ne contraint personne** : il rapporte, priorise, coordonne.
+Pipeline standard : `frontend-design → skills de build → playwright → design-taste`. `flo-debug` à la demande.
 
-## 📝 Changelog
-Voir `skills/flo-project-audit/CHANGELOG.md`.
+Chaque item de feuille de route nomme le skill responsable de l'exécution et un critère observable de « fait ». Les risques bloquants (sécurité, conformité) remontent en tête de liste quelle que soit leur taille estimée.
+
+## Autorité
+
+Méta-skill (niveau 0 — coordinateur). Aucune autorité de domaine. Orchestre et défère — en conflit de contenu, les niveaux 1–10 tranchent, jamais l'orchestrateur.
+
+## Définition de terminé
+
+L'audit couvre toutes les dimensions scorecard avec un score attribué par le skill compétent. Chaque constat est attribué à un skill avec un critère de complétion. La feuille de route est priorisée avec propriétaire et critère observable par item.
+
+## Références
+
+Invoque et séquence les 11 autres skills selon la tâche. Consomme la scorecard (`docs/scorecard.md`) et les conclusions de chaque skill. S'appuie sur `flo-debug` pour les diagnostics et `design-taste`/`playwright` pour l'audit qualité.

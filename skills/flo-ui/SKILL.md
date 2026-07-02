@@ -1,7 +1,7 @@
 ---
 name: flo-ui
-version: 1.0.0
-description: Implémentation de l'interface — transforme les recommandations de frontend-design en code réel. À activer pour composants, Tailwind, responsive, accessibilité, animations, micro-interactions, design system, tokens et patterns d'interface. Possède le COMMENT (le code), pas la structure (frontend-design) ni le jugement esthétique (design-taste).
+version: 2.0.0
+description: Implémentation de l'interface — transforme les recommandations de frontend-design en code réel. À activer pour composants, Tailwind, responsive, accessibilité, animations, micro-interactions, design system et tokens. Possède le COMMENT (le code), pas la structure (frontend-design) ni le jugement esthétique (design-taste).
 owns:
   - ui-components
   - tailwind
@@ -25,72 +25,40 @@ excludes:
 
 > Phase BUILD. Transforme la structure décidée en interface réelle : premium, cohérente, accessible.
 
-## ▶️ When To Invoke
-- **Implémenter** un composant, une variante, un état visuel.
-- Écrire du **Tailwind**, définir/étendre le **design system** et les **tokens**.
-- Gérer le **responsive**, l'**accessibilité**, les **animations** et **micro-interactions**.
-- Réaliser en code la **hiérarchie** décidée par `frontend-design`.
+## Objectif
 
-## ⏹️ When NOT To Invoke
-- Décider *quoi* mettre à l'écran, l'IA, les parcours → `frontend-design`.
-- Juger si le rendu est « beau »/« template »/« IA » → `design-taste`.
-- Server/Client Component, `next/image` → `flo-nextjs`.
-- `alt`/headings orientés indexation → `flo-seo`.
+Implémenter en code l'interface définie par `frontend-design` — composants, design system, tokens, responsive, accessibilité, animations et états de données. S'active pour tout travail sur les composants React, le système Tailwind, ou la réalisation de la hiérarchie visuelle.
 
-## 🎯 Scope (responsabilités)
-- **Composants** d'interface et leurs variantes/états ; **patterns d'interface** réutilisables.
-- **Tailwind** et **design system** / **tokens** (couleurs, espacements, rayons, ombres, typo).
-- **Responsive** (mobile-first, breakpoints).
-- **Accessibilité** : ARIA, focus, contraste, navigation clavier.
-- **Animations** et **micro-interactions** (implémentation).
-- **Ergonomie d'implémentation** : réaliser en code la hiérarchie d'intention reçue.
+## Périmètre
 
-## 🚫 Hors-scope (délégué)
-- **Structure d'écran, IA, parcours, hiérarchie (intention)** → `frontend-design`.
-- **Jugement de qualité perçue, détection « IA/template »** → `design-taste`.
-- **Server/Client, `next/image`/`next/font`** → `flo-nextjs`.
-- **Sémantique d'indexation, `alt` SEO, headings crawl** → `flo-seo`.
-- **Typage des props, archi** → `flo-dev-standards`. **Statut de synchro** → `flo-offline` (ui le rend).
+**Possède :** composants et leurs variantes/états, design system et tokens (couleurs, espacements, rayons, ombres, typographie), responsive mobile-first, accessibilité (ARIA, focus, contraste, navigation clavier), animations et micro-interactions, patterns d'interface réutilisables.
 
-## ✅ Règles strictes
+**Délègue :** décision de structure d'écran, architecture d'information et parcours → `frontend-design` · jugement de qualité perçue et détection d'artefacts IA → `design-taste` · Server/Client Component, `next/image`/`next/font` → `flo-nextjs` · sémantique d'indexation, `alt` SEO et headings de crawl → `flo-seo` · typage des props et architecture → `flo-dev-standards`.
 
-### Design system & Tailwind
-1. **Tokens, jamais de valeurs magiques** : couleurs/espacements/typo viennent de l'échelle du thème. Pas de `#hex` ni de `13px` arbitraire.
-2. Extraire en composant dès qu'un pattern de classes se répète.
-3. Un seul système d'espacement, de rayons et d'ombres pour toute l'app.
-4. **Responsive mobile-first** ; pas de breakpoint magique, on suit l'échelle.
+## Contraintes
 
-### Micro-interactions & animation
-5. Tout élément interactif a des états **hover / focus-visible / active / disabled** distincts.
-6. Transitions **courtes et fonctionnelles** (~150–250 ms) ; animer `transform`/`opacity`, pas `width`/`top`.
-7. Animation au service du sens, jamais décorative gratuite. **Respecter `prefers-reduced-motion`**.
-8. Feedback immédiat sur action (press, optimistic).
+**Tokens (non négociable) :** toutes les valeurs de couleur, espacement et typographie viennent du thème Tailwind. Jamais de `#hex`, de valeur numérique arbitraire, ou de classe `[...]` hors de l'échelle définie.
 
-### États & CTA
-9. Tout écran de données gère **les 4 états** : loading (skeleton), empty (message + action), error (message + retry), success.
-10. Implémenter la hiérarchie d'action **décidée par `frontend-design`** (1 primaire/vue) en variantes primary/secondary/tertiary ; le libellé dit l'action.
-11. Cibles tactiles ≥ 44×44px.
+**4 états obligatoires :** tout écran de données implémente loading (skeleton), empty (message + action), error (message + retry), success. Aucun état supprimé pour aller plus vite.
 
-### Accessibilité (non négociable)
-12. HTML sémantique d'abord ; ARIA seulement pour combler un manque.
-13. **Focus visible** toujours présent. Navigation clavier complète, pièges à focus gérés.
-14. Contraste **WCAG AA** (4.5:1). Information jamais portée par la seule couleur.
-15. Images décoratives `alt=""` ; `label` associé aux champs ; live regions pour l'asynchrone.
+**Accessibilité (non négociable) :**
+- Focus visible toujours présent — jamais retiré.
+- Contraste WCAG AA minimum (4.5:1 texte, 3:1 UI). Information jamais portée par la seule couleur.
+- Cibles tactiles ≥ 44×44px.
+- `prefers-reduced-motion` respecté sur toutes les animations sans exception.
 
-## ⛔ Anti-règles (jamais)
-- ❌ Jamais décider de la structure d'écran, de l'IA ou des parcours (→ `frontend-design`).
-- ❌ Jamais juger la qualité perçue de son propre rendu ni le « look IA » (→ `design-taste`).
-- ❌ Jamais décider du Server/Client Component ni du choix d'image/police (→ `flo-nextjs`).
-- ❌ Jamais écrire de `alt`/`title`/heading dans un but d'indexation (→ `flo-seo`).
-- ❌ Jamais de couleur/espacement en dur hors tokens, ni d'animation ignorant `prefers-reduced-motion`.
-- ❌ Jamais supprimer le focus visible, ni un état de données sans loading/empty/error.
+**Animations :** au service du sens, jamais décoratives gratuites. Animer `transform`/`opacity`, pas les propriétés qui déclenchent le layout (`width`, `top`, `left`).
 
-## 🥇 Priorité
-Niveau **7**. Cède devant données/sécurité/framework et devant `frontend-design` (structure). Prime sur `flo-seo` pour le visuel. Son **a11y est non négociable** : même `design-taste` s'incline devant elle.
+**Hiérarchie des CTA :** une seule action primaire par vue — décidée par `frontend-design`, implémentée en variantes primary/secondary/tertiary. Le libellé décrit l'action, pas l'état.
 
-## 🔗 Interactions
-- **Reçoit** de `frontend-design` structure, hiérarchie d'intention et patterns.
-- **Audité par** `design-taste` (qui renvoie ses corrections à ui).
-- **Validé par** `playwright`.
-- **Vit dans** les composants hébergés par `flo-nextjs` ; **partage le DOM** avec `flo-seo`.
-- **Consomme** le statut de `flo-offline` ; **applique** `flo-dev-standards`.
+## Autorité
+
+Niveau 7. Cède devant données/sécurité/framework et devant `frontend-design` (structure). Prime sur `flo-seo` pour tout ce qui concerne le visuel. Son a11y est non négociable — même `design-taste` s'incline devant elle.
+
+## Définition de terminé
+
+Tous les composants utilisent des tokens du thème. Les 4 états de données sont implémentés. Le focus est toujours visible. Les contrastes respectent WCAG AA. `prefers-reduced-motion` est respecté partout.
+
+## Références
+
+Reçoit de `frontend-design` la structure, la hiérarchie d'intention et les patterns. Audité par `design-taste` qui renvoie ses corrections ici. Validé par `playwright`. Hébergé par `flo-nextjs`. Consomme le statut de synchro de `flo-offline`. Applique `flo-dev-standards`.
