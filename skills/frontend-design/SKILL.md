@@ -1,7 +1,7 @@
 ---
 name: frontend-design
-version: 1.0.0
-description: Conception produit et UX EN AMONT de l'implémentation. À activer pour décider l'expérience utilisateur, l'architecture d'information, les parcours, la hiérarchie de contenu, la structure et l'organisation des écrans, la priorisation de l'information et les wireframes conceptuels. Ne produit ni composants React, ni design system, ni tokens.
+version: 2.0.0
+description: Conception produit et UX en amont de l'implémentation. À activer pour décider l'expérience utilisateur, l'architecture d'information, les parcours, la hiérarchie de contenu, la structure des écrans et les wireframes conceptuels. Ne produit ni composants, ni design system, ni tokens.
 owns:
   - ux
   - information-architecture
@@ -22,63 +22,37 @@ excludes:
 # frontend-design
 
 > Phase PLAN. Ce qui va à l'écran, où, et pourquoi — avant les pixels.
-> S'arrête au wireframe conceptuel ; `flo-ui` prend le relais à l'implémentation.
 
-## ▶️ When To Invoke
-- **Avant de coder un écran** : définir l'expérience, la tâche, le parcours.
-- Concevoir l'**architecture d'information** (navigation, regroupement, nommage).
-- Décider la **hiérarchie de contenu**, la **structure d'écran**, l'**organisation des sections**.
-- **Prioriser l'information** (primaire/secondaire/tertiaire) et produire un **wireframe conceptuel**.
+## Objectif
 
-## ⏹️ When NOT To Invoke
-- Écrire des **composants React**, du Tailwind, des tokens, des animations → `flo-ui`.
-- **Juger** la finition visuelle / le « look IA » → `design-taste`.
-- Sémantique d'indexation / metadata → `flo-seo`.
-- Faisabilité de rendu (Server/Client) → `flo-nextjs`.
+Définir ce qui va à l'écran, dans quel ordre et pourquoi, avant toute implémentation. S'active avant de coder un écran pour définir l'expérience utilisateur, l'architecture d'information, les parcours et la hiérarchie de contenu. Produit un wireframe conceptuel transmis à `flo-ui` pour implémentation.
 
-## 🎯 Scope (responsabilités)
-- **Expérience utilisateur** : tâches, friction, charge cognitive.
-- **Architecture d'information** : navigation, taxonomie, nommage.
-- **Parcours utilisateur** : flows, étapes, points de décision, états de parcours.
-- **Hiérarchie de contenu** & **priorisation de l'information**.
-- **Structure des écrans** & **organisation des sections** (zoning, layout intentionnel).
-- **Wireframes conceptuels** (avant pixels).
+## Périmètre
 
-## 🚫 Hors-scope (délégué)
-- **Composants React, design system, tokens, responsive, animations, a11y** → `flo-ui`.
-- **Critique visuelle / qualité perçue / détection IA** → `design-taste`.
-- **Sémantique d'indexation, metadata** → `flo-seo`.
-- **Faisabilité de rendu** → `flo-nextjs`. **Sensibilité données** → `flo-medical`.
+**Possède :** expérience utilisateur (tâches, friction, charge cognitive), architecture d'information (navigation, taxonomie, nommage), parcours utilisateur (flows, étapes, points de décision, états), hiérarchie et priorisation du contenu, structure et organisation des écrans, wireframes conceptuels.
 
-## ✅ Règles strictes
+**Délègue :** composants, Tailwind, tokens, animations → `flo-ui` · jugement de qualité visuelle et détection d'artefacts IA → `design-taste` · sémantique d'indexation et metadata → `flo-seo` · faisabilité de rendu Server/Client → `flo-nextjs` · sensibilité des données à afficher → `flo-medical`.
 
-### Avant tout écran
-1. Partir de la **tâche utilisateur**, pas d'un catalogue de composants.
-2. **Une intention primaire par écran** ; tout le reste est secondaire. C'est ce que `flo-ui` implémentera.
-3. **Minimiser les étapes** ; supprimer tout écran/champ qui ne sert pas la tâche.
+## Contraintes
 
-### Architecture d'information
-4. Navigation **prévisible** : profondeur maîtrisée, libellés dans le vocabulaire de l'utilisateur.
-5. Regrouper par **logique métier/usage**, pas par contrainte technique ; nommage cohérent entre écrans.
-6. Prévoir explicitement les **états de parcours** : premier usage, chargement, erreur, succès, cas limites.
+**Une intention primaire par écran.** Tout le reste est secondaire ou tertiaire. Cette décision est le premier livrable de ce skill — elle conditionne tout ce que `flo-ui` va implémenter.
 
-### Hiérarchie & cohérence
-7. Définir l'**ordre de lecture** et le **poids relatif** des zones avant tout style ; `flo-ui` le réalise via son système.
-8. **Réutiliser les patterns** d'un écran à l'autre : un même objet se présente toujours pareil.
-9. **Densité adaptée au métier** : un outil pro assume une densité élevée ; ne pas sous-remplir « pour faire aéré ».
+**Partir de la tâche utilisateur**, pas d'un template, d'un catalogue de composants, ni d'une idée de layout.
 
-## ⛔ Anti-règles (jamais)
-- ❌ Jamais écrire de composant, de classe de style, de token ou d'animation (→ `flo-ui`).
-- ❌ Jamais juger la finition d'un rendu existant (→ `design-taste`).
-- ❌ Jamais imposer une structure qui exposerait des données protégées (→ `flo-medical`/`flo-supabase`).
-- ❌ Jamais empiler des écrans/étapes « parce que c'est joli ».
-- ❌ Jamais copier une structure de template sans la confronter à la tâche réelle.
+**États de parcours explicites** pour chaque flow : premier usage, chargement, erreur, succès, cas limites. Un écran conçu uniquement pour le happy path n'est pas terminé.
 
-## 🥇 Priorité
-Niveau **6**. Cède devant medical, supabase, dev-standards, nextjs, offline. Prime sur `flo-ui` pour la **structure/IA**. Ses décisions sont **soumises à l'audit** de `design-taste`.
+**Densité intentionnelle :** un outil professionnel assume une densité élevée. Ne pas sous-remplir « pour faire aéré » ; ne pas surcharger pour paraître exhaustif. La densité est une décision métier, pas esthétique.
 
-## 🔗 Interactions
-- **Précède** `flo-ui` (lui transmet structure, hiérarchie, patterns).
-- **Cadre** `flo-seo` (l'IA produit influence headings/maillage).
-- **Audité par** `design-taste` ; **validé par** `playwright` (parcours → scénarios E2E).
-- **Obéit** à `flo-medical`/`flo-supabase` sur ce qui peut être affiché.
+Ne jamais concevoir une structure qui exposerait des données protégées par `flo-medical` ou `flo-supabase` — ces skills priment sur toute décision d'affichage.
+
+## Autorité
+
+Niveau 6. Cède devant `flo-medical`, `flo-supabase`, `flo-dev-standards`, `flo-nextjs`, `flo-offline`. Prime sur `flo-ui` pour la structure et l'architecture d'information. Ses décisions sont soumises à l'audit de `design-taste`.
+
+## Définition de terminé
+
+Chaque écran a une intention primaire explicite. Les états de parcours (succès, vide, erreur, cas limites) sont tous définis. La hiérarchie de contenu est documentée et transmise à `flo-ui`. Aucune structure n'expose de données protégées.
+
+## Références
+
+Précède `flo-ui` (lui transmet structure, hiérarchie d'intention et patterns réutilisables). Cadre `flo-seo` (l'architecture influence headings et maillage interne). Audité par `design-taste`. Validé par `playwright` (parcours → scénarios E2E). Obéit à `flo-medical`/`flo-supabase`.
