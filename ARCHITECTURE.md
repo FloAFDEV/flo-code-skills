@@ -101,3 +101,13 @@ excludes:    # ce qu'il délègue (token possédé par un AUTRE skill)
 
 Le frontmatter `owns`/`excludes` est la version **machine-lisible** des sections Scope/Hors-scope ;
 c'est lui que `tools/check-overlaps.ts` analyse.
+
+---
+
+## 5. Agents — composition de skills
+
+Au-dessus des 12 skills, une couche d'**agents** (`.claude/agents/*.md`) compose plusieurs skills
+pour un rôle de travail précis (isolation de contexte, curation, délégation). Un agent ne porte
+**aucune règle métier** — il déclare quels skills il précharge (frontmatter `skills:`), le contenu
+de chaque `SKILL.md` étant injecté depuis sa source unique, jamais copié. Détail, table des 6
+agents et procédure d'ajout : **[`docs/agents.md`](./docs/agents.md)**.
