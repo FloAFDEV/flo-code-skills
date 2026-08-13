@@ -1,6 +1,6 @@
 ---
 name: flo-nextjs
-version: 2.0.0
+version: 2.1.0
 description: Règles Next.js 15+ (App Router). À activer pour routes, layouts, Server/Client Components, data fetching serveur, caching/revalidation, Server Actions, next/image, next/font, middleware et configuration de rendu. Possède la mécanique de l'API Metadata (pas son contenu, qui appartient à flo-seo).
 owns:
   - app-router
@@ -45,6 +45,8 @@ Concevoir et implémenter correctement les routes, le rendu et la performance d'
 
 **Build :** ne jamais désactiver les vérifications TypeScript ou ESLint dans `next.config`.
 
+**Analytics (Umami) :** quand un projet intègre Umami (défaut recommandé par `flo-dev-standards`, qui fixe le choix — pas la mécanique), le script de suivi se charge via `next/script` dans le layout racine, jamais derrière un `'use client'` dédié pour ce seul besoin. L'identifiant de site vient d'une variable d'environnement publique (`NEXT_PUBLIC_UMAMI_WEBSITE_ID`) — jamais codé en dur ; ce n'est pas un secret (identifiant public), mais il reste piloté par variable d'environnement comme tout paramètre d'intégration tierce. Activation en production uniquement : variable absente en développement = script absent, pas de condition supplémentaire à écrire. Si le projet instrumente des événements/objectifs personnalisés, ils restent déclenchés côté client au moment de l'interaction, sans dupliquer une logique métier serveur — même principe que n'importe quel script tiers, pas un cas spécial.
+
 **Exception offline-first (assumée) :** les lectures depuis le store IndexedDB côté client relèvent de `flo-offline` et ne violent pas « Server Component par défaut » — c'est une exception documentée propre à cette architecture.
 
 ## Autorité
@@ -53,7 +55,7 @@ Niveau 4. Cède devant `flo-medical`, `flo-supabase`, `flo-dev-standards`. Tranc
 
 ## Définition de terminé
 
-Toutes les routes utilisent l'App Router. Les stratégies de cache sont documentées et intentionnelles. Aucun secret ne transite vers un Client Component. Les Server Actions valident et autorisent côté serveur.
+Toutes les routes utilisent l'App Router. Les stratégies de cache sont documentées et intentionnelles. Aucun secret ne transite vers un Client Component. Les Server Actions valident et autorisent côté serveur. Si Umami est intégré, il l'est via `next/script` dans le layout racine, avec son identifiant de site en variable d'environnement.
 
 ## Références
 

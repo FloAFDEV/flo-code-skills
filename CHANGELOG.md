@@ -4,6 +4,15 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com). Versionnement
 (SemVer, voir `docs/VERSIONING.md`). Ce fichier agrège les évolutions ; chaque skill tient
 aussi son propre `skills/<skill>/CHANGELOG.md`.
 
+## [Analytics — Umami par défaut] — 2026-08-13
+
+### Changed
+- **flo-dev-standards** 2.0.0 → 2.1.0 — nouvelle convention `project-conventions` : Umami recommandé par défaut pour l'analytics web d'un nouveau site Next.js, GA4 conservé comme option complémentaire lorsqu'un besoin réel le justifie (jamais retiré, jamais présenté comme obligatoire dans un sens ou l'autre). UTM indépendantes du provider. Pas de migration automatique des projets existants. Pas d'affirmation absolue sur le consentement.
+- **flo-nextjs** 2.0.0 → 2.1.0 — principes d'intégration technique Umami en App Router (`next/script`, `NEXT_PUBLIC_UMAMI_WEBSITE_ID`, activation production). Mécanique uniquement ; la politique reste dans `flo-dev-standards`.
+- **flo-seo** 2.0.0 → 2.1.0 — clarification de frontière Search Console (SEO/indexation) vs analytics web (Umami/GA4) ; pointeur vers `flo-dev-standards`, aucune duplication de la convention.
+
+Aucun nouveau token `owns`, aucun skill créé (`flo-analytics` explicitement écarté). Trois bumps MINOR, additifs, non cassants.
+
 ## [Phase 2] — 2026-06-17
 
 ### Added
