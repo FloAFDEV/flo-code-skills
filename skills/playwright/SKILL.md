@@ -1,6 +1,6 @@
 ---
 name: playwright
-version: 2.0.0
+version: 2.1.0
 description: Validation fonctionnelle automatisée avec Playwright. À activer pour tests E2E, smoke tests, parcours critiques, régressions UI, captures d'écran, responsive, accessibilité de base et vérification des erreurs console/réseau. Étape ante-validation dans le pipeline — produit des faits, ne juge pas l'esthétique.
 owns:
   - e2e-tests
@@ -44,6 +44,10 @@ Valider automatiquement que les parcours critiques fonctionnent sur l'app réell
 **Isolation :** chaque test crée et nettoie son propre état. Indépendant de l'ordre d'exécution. Rejouable à l'infini.
 
 **Données :** anonymisées (exigence de `flo-medical`) — jamais de vraie donnée patient dans les fixtures ou captures. Secrets via variables d'environnement.
+
+**Fidélité à une référence :** quand une référence visuelle existe (prototype Lovable lancé localement, build antérieur, export de maquette), comparer captures pleine page référence ↔ cible aux viewports clés avec `toHaveScreenshot` — kit prêt à copier : `tools/visual-fidelity/`. Mêmes viewports, même moteur (Chromium), même masque des zones dynamiques dans les deux passes, seuil en **pixels absolus** (un ratio masque un CTA sur une page longue). Sans référence exploitable, **aucune conformité visuelle n'est déclarée** : seuls les captures et les contrôles fonctionnels sont rapportés.
+
+**Exploration interactive :** le serveur MCP Playwright (si configuré) sert à explorer et diagnostiquer (hover, menus, liens, console) ; ce qui doit rester vrai est codifié en test, jamais laissé à une session d'exploration.
 
 **Santé runtime :** une erreur `console.error` inattendue pendant un parcours fait échouer le test. Vérifier les statuts réseau attendus et l'absence de 4xx/5xx non gérés.
 

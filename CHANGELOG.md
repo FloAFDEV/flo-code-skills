@@ -4,6 +4,20 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com). Versionnement
 (SemVer, voir `docs/VERSIONING.md`). Ce fichier agrège les évolutions ; chaque skill tient
 aussi son propre `skills/<skill>/CHANGELOG.md`.
 
+## [Fidélité visuelle — Lovable → Next.js] — 2026-10-24
+
+### Added
+- `tools/visual-fidelity/` — kit `@playwright/test` de comparaison référence ↔ cible (3 viewports, seuil en pixels absolus, masques).
+- `docs/visual-workflow.md` — installation épinglée (Playwright MCP, 3 skills Emil Kowalski, Figma conditionnel), boucle de fidélité, consigne réutilisable.
+- ADR 0002 — évaluation des outils design tiers : Playwright MCP et Emil (sélection) retenus, Figma conditionnel, Impeccable différé, Taste écarté.
+
+### Changed
+- **flo-ui** 2.0.0 → 2.1.0 — portage d'une référence : tokens repris à l'identique.
+- **design-taste** 2.0.0 → 2.1.0 — une référence fournie prime sur le benchmark générique et les outils tiers.
+- **playwright** 2.0.0 → 2.1.0 — fidélité à une référence via le kit ; MCP = exploration, pas substitut aux tests.
+
+Aucun nouveau skill, aucun nouveau token `owns`. Trois bumps MINOR additifs.
+
 ## [Analytics — Umami par défaut] — 2026-08-13
 
 ### Changed

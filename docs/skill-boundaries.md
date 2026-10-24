@@ -55,6 +55,16 @@ Voir aussi : [`scorecard.md`](./scorecard.md) (évaluation 10 dimensions),
 > - `flo-project-audit` — **méta-coordinateur (niveau 0)** : orchestre, ne juge pas, défère aux niveaux 1–10.
 > - `flo-debug` — **diagnostic transverse** : trouve la cause sur tout le stack, défère le correctif au skill propriétaire.
 
+### Référence visuelle et outils tiers
+
+- Une **référence fournie** (prototype Lovable, maquette Figma, front existant) prime sur le goût
+  générique : `design-taste` juge l'écart à la référence avant le benchmark ; ses autres propositions
+  restent optionnelles. a11y et correction gardent leur autorité.
+- Les skills tiers (ex. `review-animations` d'Emil Kowalski) **conseillent** sans autorité de domaine :
+  l'implémentation reste à `flo-ui`, la validation à `playwright`. Choix et périmètre :
+  [ADR 0002](../knowledge/adr/0002-outils-design-tiers-et-fidelite-visuelle.md),
+  [`visual-workflow.md`](./visual-workflow.md).
+
 ## Matrice Skill → Mission / Couvre / Ne couvre PAS / Dépendances / Risque
 
 | Skill | Mission | Couvre (`owns`) | Ne couvre PAS (`excludes` → propriétaire) | Dépend de | Risque de chevauchement → résolution |

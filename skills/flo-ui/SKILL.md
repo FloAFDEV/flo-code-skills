@@ -1,6 +1,6 @@
 ---
 name: flo-ui
-version: 2.0.0
+version: 2.1.0
 description: Implémentation de l'interface — transforme les recommandations de frontend-design en code réel. À activer pour composants, Tailwind, responsive, accessibilité, animations, micro-interactions, design system et tokens. Possède le COMMENT (le code), pas la structure (frontend-design) ni le jugement esthétique (design-taste).
 owns:
   - ui-components
@@ -38,6 +38,8 @@ Implémenter en code l'interface définie par `frontend-design` — composants, 
 ## Contraintes
 
 **Tokens (non négociable) :** toutes les valeurs de couleur, espacement et typographie viennent du thème Tailwind. Jamais de `#hex`, de valeur numérique arbitraire, ou de classe `[...]` hors de l'échelle définie.
+
+**Portage d'une référence (ex. Lovable → Next.js) :** les tokens de la référence (variables CSS, `tailwind.config`, polices, rayons, ombres, durées/easings) sont **repris tels quels** dans le thème — pas approximés vers une échelle générique. Une valeur arbitraire de la référence devient un token nommé, à valeur identique. Typo, espacements, images, hover, transitions et animations sont reproduits, pas simplifiés.
 
 **4 états obligatoires :** tout écran de données implémente loading (skeleton), empty (message + action), error (message + retry), success. Aucun état supprimé pour aller plus vite.
 

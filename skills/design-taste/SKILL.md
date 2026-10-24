@@ -1,6 +1,6 @@
 ---
 name: design-taste
-version: 2.0.0
+version: 2.1.0
 description: Auditeur visuel final. À activer après implémentation pour critiquer la qualité perçue, détecter les artefacts IA et aligner le rendu sur le niveau Linear / Stripe / Notion / Vercel. Produit des recommandations — ne génère ni ne modifie l'interface.
 owns:
   - visual-critique
@@ -46,6 +46,8 @@ Chaque constat nomme le problème précis, sa localisation, et le skill qui corr
 - Plusieurs CTA de même poids visuel, libellés génériques (« Get Started », « Learn More »).
 - Structure cookie-cutter hero + 3 features + pricing sans ancrage dans le vrai contenu et la vraie marque.
 - Espacement uniforme sans rythme, une seule graisse typographique, icônes dépareillées, copy générique.
+
+**Référence fournie = autorité visuelle :** si le projet porte une référence (prototype Lovable, maquette Figma, front existant à reproduire), la fidélité prime sur le benchmark générique et sur les recommandations d'outils tiers. Un écart à la référence est un défaut ; une « amélioration » qui s'en éloigne n'est proposée que comme option séparée, jamais appliquée d'office — sauf a11y ou bug, qui restent prioritaires.
 
 **Standard de référence :** sobriété, densité maîtrisée, typographie hiérarchisée, intention de marque lisible, raffinement par le retrait plutôt que par l'ajout.
 
