@@ -1,6 +1,6 @@
 ---
 name: flo-ui
-version: 2.0.0
+version: 2.1.0
 description: Implémentation de l'interface — transforme les recommandations de frontend-design en code réel. À activer pour composants, Tailwind, responsive, accessibilité, animations, micro-interactions, design system et tokens. Possède le COMMENT (le code), pas la structure (frontend-design) ni le jugement esthétique (design-taste).
 owns:
   - ui-components
@@ -38,6 +38,12 @@ Implémenter en code l'interface définie par `frontend-design` — composants, 
 ## Contraintes
 
 **Tokens (non négociable) :** toutes les valeurs de couleur, espacement et typographie viennent du thème Tailwind. Jamais de `#hex`, de valeur numérique arbitraire, ou de classe `[...]` hors de l'échelle définie.
+
+**Selon le mode** (REPRODUCTION / ADAPTATION / CRÉATION — définitions et priorité : `docs/skill-boundaries.md`) :
+- **REPRODUCTION** — les valeurs de la référence (variables CSS ou `tailwind.config` Lovable, variables Figma, valeurs relevées sur le site existant ou sur les captures fournies) deviennent des tokens du thème **à valeur identique**, jamais approximées vers une échelle générique. Typo, espacements, images, hover, transitions et animations sont reproduits, pas simplifiés.
+- **ADAPTATION** — le langage visuel de la référence est traduit dans les tokens et composants du projet ; chaque écart est délibéré et listé.
+- **CRÉATION** — les tokens découlent du brief et de la direction artistique retenue (`design-taste` y contribue).
+Dans les trois modes, la règle des tokens s'applique (une valeur reprise devient un token nommé) et l'accessibilité ci-dessous prime : si la référence la viole, corriger et signaler l'écart.
 
 **4 états obligatoires :** tout écran de données implémente loading (skeleton), empty (message + action), error (message + retry), success. Aucun état supprimé pour aller plus vite.
 

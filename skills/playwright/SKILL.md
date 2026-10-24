@@ -1,6 +1,6 @@
 ---
 name: playwright
-version: 2.0.0
+version: 2.1.0
 description: Validation fonctionnelle automatisée avec Playwright. À activer pour tests E2E, smoke tests, parcours critiques, régressions UI, captures d'écran, responsive, accessibilité de base et vérification des erreurs console/réseau. Étape ante-validation dans le pipeline — produit des faits, ne juge pas l'esthétique.
 owns:
   - e2e-tests
@@ -44,6 +44,14 @@ Valider automatiquement que les parcours critiques fonctionnent sur l'app réell
 **Isolation :** chaque test crée et nettoie son propre état. Indépendant de l'ordre d'exécution. Rejouable à l'infini.
 
 **Données :** anonymisées (exigence de `flo-medical`) — jamais de vraie donnée patient dans les fixtures ou captures. Secrets via variables d'environnement.
+
+**Fidélité à une référence (modes REPRODUCTION / ADAPTATION, voir `docs/skill-boundaries.md`) :**
+- Référence **exécutable** (prototype Lovable lancé localement, site existant, build antérieur) : comparer captures pleine page référence ↔ cible avec le kit `tools/visual-fidelity/` (`toHaveScreenshot`) — mêmes viewports, même moteur (Chromium), même masque dans les deux passes, seuil en **pixels absolus**. En ADAPTATION, limiter la comparaison aux routes censées rester identiques ; les autres écarts sont rapportés, pas jugés.
+- Référence **statique** (Figma, captures, images, PDF) : pas de diff pixel automatique ; produire les captures de la cible aux mêmes dimensions pour une comparaison côte à côte et rapporter les écarts observés, sans score de conformité.
+- **CRÉATION** : aucune baseline n'est fabriquée — jamais la cible comme sa propre référence. Seuls captures et contrôles fonctionnels sont rapportés, sans parler de conformité.
+- Tout rapport indique le mode et la ou les sources de référence utilisées.
+
+**Exploration interactive :** le serveur MCP Playwright (si configuré) sert à explorer et diagnostiquer (hover, menus, liens, console) ; ce qui doit rester vrai est codifié en test, jamais laissé à une session d'exploration.
 
 **Santé runtime :** une erreur `console.error` inattendue pendant un parcours fait échouer le test. Vérifier les statuts réseau attendus et l'absence de 4xx/5xx non gérés.
 

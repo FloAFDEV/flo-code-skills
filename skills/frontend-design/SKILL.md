@@ -1,6 +1,6 @@
 ---
 name: frontend-design
-version: 2.0.0
+version: 2.1.0
 description: Conception produit et UX en amont de l'implémentation. À activer pour décider l'expérience utilisateur, l'architecture d'information, les parcours, la hiérarchie de contenu, la structure des écrans et les wireframes conceptuels. Ne produit ni composants, ni design system, ni tokens.
 owns:
   - ux
@@ -38,6 +38,8 @@ Définir ce qui va à l'écran, dans quel ordre et pourquoi, avant toute implém
 **Une intention primaire par écran.** Tout le reste est secondaire ou tertiaire. Cette décision est le premier livrable de ce skill — elle conditionne tout ce que `flo-ui` va implémenter.
 
 **Partir de la tâche utilisateur**, pas d'un template, d'un catalogue de composants, ni d'une idée de layout.
+
+**Référence explicite** (Figma, prototype Lovable, site existant, captures — modes : `docs/skill-boundaries.md`) : en REPRODUCTION, la structure de la référence est reprise telle quelle, ce skill ne vérifie que les parcours et états manquants ; en ADAPTATION, elle est le point de départ et chaque changement de structure est justifié ; en CRÉATION, ce skill conçoit la structure.
 
 **États de parcours explicites** pour chaque flow : premier usage, chargement, erreur, succès, cas limites. Un écran conçu uniquement pour le happy path n'est pas terminé.
 

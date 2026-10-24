@@ -55,6 +55,43 @@ Voir aussi : [`scorecard.md`](./scorecard.md) (évaluation 10 dimensions),
 > - `flo-project-audit` — **méta-coordinateur (niveau 0)** : orchestre, ne juge pas, défère aux niveaux 1–10.
 > - `flo-debug` — **diagnostic transverse** : trouve la cause sur tout le stack, défère le correctif au skill propriétaire.
 
+### Décisions visuelles : mode, sources et priorité
+
+> **Une référence explicitement fournie par le projet est prioritaire sur les recommandations
+> esthétiques génériques. En l'absence de référence, les skills de design définissent la direction
+> artistique.**
+
+**Mode** — établi en début de mission et annoncé dans chaque rapport, avec les sources utilisées :
+
+| Mode | Quand | Objectif |
+|------|-------|----------|
+| **REPRODUCTION** | une référence explicite doit être reproduite | fidélité maximale à la référence |
+| **ADAPTATION** | une référence sert de point de départ pour un nouveau projet | reprendre son intention et son langage visuel, écarts délibérés et listés |
+| **CRÉATION** | aucune référence, ou nouvelle direction artistique demandée | concevoir une direction à partir du brief, de la marque, de la cible et des contraintes |
+
+**Sources de référence**, quand elles existent : maquette Figma (source principale si elle existe ;
+Figma MCP seulement dans ce cas), prototype Lovable, site existant (rendu, comportement, contraintes),
+captures / images / PDF fournis. Sans aucune de ces sources, le mode est CRÉATION — on n'invente pas
+de référence.
+
+**Priorité des décisions visuelles** (les niveaux inférieurs complètent, interprètent ou améliorent
+tant qu'ils ne contredisent pas un niveau supérieur — ils ne sont jamais ignorés) :
+
+| # | Niveau | Porté par |
+|---|--------|-----------|
+| 1 | Contraintes explicites du projet : brief, marque, contenu, fonctionnalités, contraintes techniques, accessibilité, SEO | le projet ; a11y → `flo-ui`, SEO → `flo-seo`, données → niveaux 1–5 de l'échelle ci-dessus |
+| 2 | Référence visuelle explicite (Figma, Lovable, site existant, captures, design fourni) | la référence ; mesurée par `playwright` |
+| 3 | Design system et conventions du projet : tokens, composants existants, conventions du dépôt | `flo-ui` |
+| 4 | Recommandations spécialisées : qualité et performance des animations | skills Emil Kowalski (`review-animations`, `improve-animations`, `animation-performance`) |
+| 5 | Direction artistique générique | `design-taste` — décisive surtout en CRÉATION |
+
+Cette priorité ne modifie pas l'échelle d'autorité des skills ci-dessus : elle ordonne les **sources**
+d'une décision visuelle. Une référence qui viole une contrainte de niveau 1 (contraste, cible tactile,
+contenu réel) est corrigée et l'écart est signalé. Les skills tiers conseillent sans autorité de
+domaine : l'implémentation reste à `flo-ui`, la validation à `playwright`. Choix et périmètre :
+[ADR 0002](../knowledge/adr/0002-outils-design-tiers-et-fidelite-visuelle.md),
+[`visual-workflow.md`](./visual-workflow.md).
+
 ## Matrice Skill → Mission / Couvre / Ne couvre PAS / Dépendances / Risque
 
 | Skill | Mission | Couvre (`owns`) | Ne couvre PAS (`excludes` → propriétaire) | Dépend de | Risque de chevauchement → résolution |
