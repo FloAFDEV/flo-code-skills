@@ -45,7 +45,11 @@ Valider automatiquement que les parcours critiques fonctionnent sur l'app réell
 
 **Données :** anonymisées (exigence de `flo-medical`) — jamais de vraie donnée patient dans les fixtures ou captures. Secrets via variables d'environnement.
 
-**Fidélité à une référence :** quand une référence visuelle existe (prototype Lovable lancé localement, build antérieur, export de maquette), comparer captures pleine page référence ↔ cible aux viewports clés avec `toHaveScreenshot` — kit prêt à copier : `tools/visual-fidelity/`. Mêmes viewports, même moteur (Chromium), même masque des zones dynamiques dans les deux passes, seuil en **pixels absolus** (un ratio masque un CTA sur une page longue). Sans référence exploitable, **aucune conformité visuelle n'est déclarée** : seuls les captures et les contrôles fonctionnels sont rapportés.
+**Fidélité à une référence (modes REPRODUCTION / ADAPTATION, voir `docs/skill-boundaries.md`) :**
+- Référence **exécutable** (prototype Lovable lancé localement, site existant, build antérieur) : comparer captures pleine page référence ↔ cible avec le kit `tools/visual-fidelity/` (`toHaveScreenshot`) — mêmes viewports, même moteur (Chromium), même masque dans les deux passes, seuil en **pixels absolus**. En ADAPTATION, limiter la comparaison aux routes censées rester identiques ; les autres écarts sont rapportés, pas jugés.
+- Référence **statique** (Figma, captures, images, PDF) : pas de diff pixel automatique ; produire les captures de la cible aux mêmes dimensions pour une comparaison côte à côte et rapporter les écarts observés, sans score de conformité.
+- **CRÉATION** : aucune baseline n'est fabriquée — jamais la cible comme sa propre référence. Seuls captures et contrôles fonctionnels sont rapportés, sans parler de conformité.
+- Tout rapport indique le mode et la ou les sources de référence utilisées.
 
 **Exploration interactive :** le serveur MCP Playwright (si configuré) sert à explorer et diagnostiquer (hover, menus, liens, console) ; ce qui doit rester vrai est codifié en test, jamais laissé à une session d'exploration.
 

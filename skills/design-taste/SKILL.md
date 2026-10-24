@@ -47,7 +47,10 @@ Chaque constat nomme le problème précis, sa localisation, et le skill qui corr
 - Structure cookie-cutter hero + 3 features + pricing sans ancrage dans le vrai contenu et la vraie marque.
 - Espacement uniforme sans rythme, une seule graisse typographique, icônes dépareillées, copy générique.
 
-**Référence fournie = autorité visuelle :** si le projet porte une référence (prototype Lovable, maquette Figma, front existant à reproduire), la fidélité prime sur le benchmark générique et sur les recommandations d'outils tiers. Un écart à la référence est un défaut ; une « amélioration » qui s'en éloigne n'est proposée que comme option séparée, jamais appliquée d'office — sauf a11y ou bug, qui restent prioritaires.
+**Mode d'abord :** chaque audit annonce son mode et ses sources de référence (définitions et priorité : `docs/skill-boundaries.md`). Les contraintes explicites du projet (brief, marque, contenu, a11y, SEO) priment dans tous les modes.
+- **REPRODUCTION** — le critère est l'écart à la référence (Figma, Lovable, site existant, captures…). Un trait présent dans la référence, y compris un artefact listé ci-dessus, n'est pas un défaut ; toute amélioration est une option séparée, jamais appliquée d'office.
+- **ADAPTATION** — le critère est la cohérence avec l'intention et le langage visuel de la référence ; chaque écart doit être délibéré et justifié par le projet.
+- **CRÉATION** — aucune référence imposée : ce skill contribue à définir la direction artistique à partir du brief, de la marque, de la cible et des contraintes ; la checklist ci-dessus et le standard ci-dessous s'appliquent pleinement.
 
 **Standard de référence :** sobriété, densité maîtrisée, typographie hiérarchisée, intention de marque lisible, raffinement par le retrait plutôt que par l'ajout.
 
@@ -57,7 +60,7 @@ Niveau 9 — gate esthétique. Peut bloquer la validation finale sur des défaut
 
 ## Définition de terminé
 
-Aucun artefact IA détectable. Chaque défaut constaté est attribué à un skill avec une correction concrète. L'intention de marque est lisible et différenciante.
+Le mode et les sources de référence sont annoncés. Aucun artefact IA détectable, hors traits repris d'une référence en REPRODUCTION ou ADAPTATION. Chaque défaut constaté est attribué à un skill avec une correction concrète. L'intention de marque est lisible et différenciante.
 
 ## Références
 

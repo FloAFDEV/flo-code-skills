@@ -4,19 +4,21 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com). Versionnement
 (SemVer, voir `docs/VERSIONING.md`). Ce fichier agrège les évolutions ; chaque skill tient
 aussi son propre `skills/<skill>/CHANGELOG.md`.
 
-## [Fidélité visuelle — Lovable → Next.js] — 2026-10-24
+## [Workflow visuel — reproduction, adaptation, création] — 2026-10-24
 
 ### Added
-- `tools/visual-fidelity/` — kit `@playwright/test` de comparaison référence ↔ cible (3 viewports, seuil en pixels absolus, masques).
-- `docs/visual-workflow.md` — installation épinglée (Playwright MCP, 3 skills Emil Kowalski, Figma conditionnel), boucle de fidélité, consigne réutilisable.
+- Modes REPRODUCTION / ADAPTATION / CRÉATION et priorité des décisions visuelles (contraintes du projet > référence > conventions > recommandations animation > goût générique) dans `docs/skill-boundaries.md`.
+- `tools/visual-fidelity/` — kit `@playwright/test` de comparaison référence exécutable ↔ cible (3 viewports, seuil en pixels absolus, masques) ; mode et source obligatoires, refus en CRÉATION et sans baseline.
+- `docs/visual-workflow.md` — choix du mode selon la référence disponible, installation épinglée (Playwright MCP, 3 skills Emil Kowalski, Figma conditionnel), boucle de validation, consigne réutilisable.
 - ADR 0002 — évaluation des outils design tiers : Playwright MCP et Emil (sélection) retenus, Figma conditionnel, Impeccable différé, Taste écarté.
 
 ### Changed
-- **flo-ui** 2.0.0 → 2.1.0 — portage d'une référence : tokens repris à l'identique.
-- **design-taste** 2.0.0 → 2.1.0 — une référence fournie prime sur le benchmark générique et les outils tiers.
-- **playwright** 2.0.0 → 2.1.0 — fidélité à une référence via le kit ; MCP = exploration, pas substitut aux tests.
+- **flo-ui** 2.0.0 → 2.1.0 — tokens selon le mode : identiques en REPRODUCTION, traduits en ADAPTATION, issus du brief en CRÉATION ; l'a11y prime sur la référence.
+- **design-taste** 2.0.0 → 2.1.0 — audit annoncé avec son mode : écart à la référence en REPRODUCTION, cohérence en ADAPTATION, direction artistique en CRÉATION.
+- **frontend-design** 2.0.0 → 2.1.0 — structure selon le mode : reprise de la référence en REPRODUCTION, point de départ en ADAPTATION, conçue en CRÉATION.
+- **playwright** 2.0.0 → 2.1.0 — mesure selon le mode et le type de référence ; jamais de baseline fabriquée ; MCP = exploration, pas substitut aux tests.
 
-Aucun nouveau skill, aucun nouveau token `owns`. Trois bumps MINOR additifs.
+Aucun nouveau skill, aucun nouveau token `owns`. Quatre bumps MINOR additifs.
 
 ## [Analytics — Umami par défaut] — 2026-08-13
 

@@ -15,8 +15,9 @@ rendu). Les deux skills partagent une même posture : décider/juger le produit 
 ## Objectif
 
 Porter le jugement produit à deux moments du pipeline : en amont (quoi construire, où, pourquoi)
-et en aval (est-ce que le résultat est à la hauteur — niveau Linear/Stripe/Notion/Vercel, zéro
-rendu générique). Charger le skill pertinent selon la phase de la mission.
+et en aval (est-ce que le résultat est à la hauteur — fidèle à la référence en REPRODUCTION ou
+ADAPTATION ; en CRÉATION, niveau Linear/Stripe/Notion/Vercel, zéro rendu générique). Charger le skill
+pertinent selon la phase de la mission.
 
 ## Délègue
 

@@ -1,9 +1,12 @@
-// Kit de fidélité visuelle : compare le rendu d'une app à une référence (prototype Lovable,
-// build précédent…) par captures pleine page, à plusieurs viewports.
+// Kit de fidélité visuelle : compare le rendu d'une app à une référence EXÉCUTABLE (prototype
+// Lovable, site existant, build antérieur) par captures pleine page, à plusieurs viewports.
+// Modes REPRODUCTION et ADAPTATION uniquement ; en CRÉATION il n'existe pas de référence à mesurer.
 //
 // Deux passes, même config, URL différente :
-//   1. référence : FIDELITY_URL=<url-ref>    npx playwright test -c <ce-dossier> --update-snapshots=all
-//   2. cible     : FIDELITY_URL=<url-cible>  npx playwright test -c <ce-dossier>
+//   1. référence : FIDELITY_MODE=reproduction|adaptation FIDELITY_REFERENCE="<source>" \
+//                  FIDELITY_URL=<url-ref> npx playwright test -c <ce-dossier> --update-snapshots=all
+//   2. cible     : FIDELITY_URL=<url-cible> npx playwright test -c <ce-dossier>
+//                  (mode et source sont relus depuis __reference__/source.json)
 //
 // FIDELITY_MASK doit être identique dans les deux passes (le masque est peint dans la capture).
 // Variables : FIDELITY_URL (requis), FIDELITY_ROUTES ("/,/contact"), FIDELITY_MASK (sélecteurs CSS
@@ -13,6 +16,9 @@ import { defineConfig, devices } from "@playwright/test";
 
 const baseURL = process.env.FIDELITY_URL;
 if (!baseURL) throw new Error("FIDELITY_URL est requis (ex. http://localhost:3000)");
+if (process.env.FIDELITY_MODE?.toLowerCase() === "creation") {
+  throw new Error("Mode CRÉATION : aucune référence à comparer, ce kit ne s'applique pas.");
+}
 
 export default defineConfig({
   testDir: ".",
@@ -20,6 +26,8 @@ export default defineConfig({
   snapshotPathTemplate: "{testDir}/__reference__/{projectName}/{arg}{ext}",
   outputDir: "./test-results",
   reporter: [["list"], ["html", { outputFolder: "./report", open: "never" }]],
+  // Jamais de baseline créée implicitement : seule la passe référence (--update-snapshots=all) en écrit.
+  updateSnapshots: "none",
   fullyParallel: true,
   retries: 0,
   use: {
