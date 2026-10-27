@@ -5,7 +5,7 @@
 > Système universel de skills Claude Code de Florent (AFDEV) — socle de référence orienté **production professionnelle**.
 > **Next.js 15+** · **Vite/React** · **Supabase** · **Offline-first (Dexie/IndexedDB)** · **SaaS & médical** · **UX/UI premium** · **SEO avancé** · **E2E Playwright**.
 
-12 skills **cohérents, non redondants et sans conflit d'autorité**, **versionnés** et vérifiés automatiquement.
+15 skills **cohérents, non redondants et sans conflit d'autorité**, **versionnés** et vérifiés automatiquement.
 Objectif produit : des interfaces **crédibles, sobres, professionnelles** au niveau de **Linear, Stripe, Notion, Vercel** — et zéro rendu « qui sent l'IA ».
 
 > 🚀 **Opérationnel en moins de 5 minutes :** cloner, puis suivre **[INSTALL.md](./INSTALL.md)** (macOS / Linux / Windows, mise à jour, désinstallation, vérification).
@@ -22,7 +22,7 @@ Objectif produit : des interfaces **crédibles, sobres, professionnelles** au ni
 
 ---
 
-## 📦 Les 12 skills
+## 📦 Les 15 skills
 
 | Skill | Phase | Domaine |
 |-------|-------|---------|
@@ -38,6 +38,9 @@ Objectif produit : des interfaces **crédibles, sobres, professionnelles** au ni
 | **flo-ui** | build | Composants, Tailwind, responsive, a11y, animations, micro-interactions, design system, tokens |
 | **design-taste** | audit | Critique visuelle, qualité perçue, **détection artefacts IA**, raffinement, benchmark SaaS premium |
 | **playwright** | audit | E2E, smoke, parcours critiques, régressions UI, captures, responsive, a11y de base, console, réseau |
+| **flo-creative-frontend** | opt-in | active la couche créative par projet : priorité des règles, réutilisation, bibliothèque de patterns |
+| **flo-art-direction** | opt-in | méthode de direction artistique : composition, rythme, surfaces, sections |
+| **flo-motion** | opt-in | Motion / storytelling au scroll : choix de technique, chorégraphie, perf, reduced motion |
 
 Frontières détaillées : **[`docs/skill-boundaries.md`](./docs/skill-boundaries.md)** · architecture interne : **[`ARCHITECTURE.md`](./ARCHITECTURE.md)**.
 

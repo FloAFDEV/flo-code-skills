@@ -43,6 +43,8 @@ Voir aussi : [`scorecard.md`](./scorecard.md) (évaluation 10 dimensions),
 | 5 | **flo-offline** | intégrité persistance locale |
 | 6 | **frontend-design** | structure UX / IA / intention de hiérarchie |
 | 7 | **flo-ui** | implémentation visuelle/interaction (**a11y non négociable**) |
+| 7a | **flo-art-direction** *(opt-in)* | direction artistique, composition, rythme — cède à frontend-design (structure) et flo-ui (a11y/tokens) |
+| 7b | **flo-motion** *(opt-in)* | choix de technique et chorégraphie du mouvement — cède à flo-ui (a11y, règles de base des animations) |
 | 8 | **flo-seo** | découvrabilité |
 | 9 | **design-taste** | qualité perçue / véto esthétique *(dans ses limites)* |
 | 10 | **playwright** | validation fonctionnelle *(rapporte, ne dicte pas)* |
@@ -54,6 +56,7 @@ Voir aussi : [`scorecard.md`](./scorecard.md) (évaluation 10 dimensions),
 > **Hors échelle (non-autoritaires)** :
 > - `flo-project-audit` — **méta-coordinateur (niveau 0)** : orchestre, ne juge pas, défère aux niveaux 1–10.
 > - `flo-debug` — **diagnostic transverse** : trouve la cause sur tout le stack, défère le correctif au skill propriétaire.
+> - `flo-creative-frontend` — **orchestrateur opt-in** de la couche créative : activation par projet, priorité des sources, politique de réutilisation, bibliothèque de patterns. Inactif sans déclaration du projet ; 7a/7b ne s'appliquent alors pas.
 
 ### Décisions visuelles : mode, sources et priorité
 
@@ -108,6 +111,9 @@ domaine : l'implémentation reste à `flo-ui`, la validation à `playwright`. Ch
 | **playwright** | Validation auto (prod SaaS) | e2e-tests, smoke-tests, critical-journey-validation, ui-regression, test-screenshots, responsive-testing, basic-a11y-testing, console-error-checks, network-checks | perceived-quality-audit→design-taste, ai-artifact-detection→design-taste, unit-testing→dev, user-flows→frontend-design | l'app construite | vs design-taste : mécanisme vs jugement |
 | **flo-project-audit** | Orchestrateur (méta) | project-audit, skill-orchestration, roadmap-prioritization, scorecard-evaluation | code-review→dev, visual-critique→design-taste, error-diagnosis→debug, e2e-tests→playwright, ux→frontend-design | tous (coordonne) | « audit » : project-audit = projet/orchestration, code-review = code, design-taste = visuel |
 | **flo-debug** | Diagnostic transverse | error-diagnosis, stack-trace-analysis, react-debugging, nextjs-debugging, supabase-debugging, dexie-debugging, performance-diagnosis | error-handling→dev, nextjs-performance→nextjs, unit-testing→dev, rls→supabase, e2e-tests→playwright | l'app + tous | « erreur » : debug = diagnostic runtime, dev = pattern ; « perf » : debug = pourquoi, nextjs = construire, seo = budget |
+| **flo-creative-frontend** | Orchestrateur couche créative (opt-in) | creative-layer-activation, creative-rule-precedence, pattern-reuse-policy, pattern-library | art-direction→art-direction, motion-choreography→motion, ui-components→ui, screen-structure→frontend-design, visual-critique→design-taste | ui, nextjs (si Next), dev-standards | vs flo-project-audit : celui-ci orchestre un audit, creative-frontend active une couche de build |
+| **flo-art-direction** | Direction artistique (opt-in) | art-direction, visual-composition, visual-rhythm, section-visual-transitions | design-tokens→ui, design-system→ui, screen-structure→frontend-design, visual-critique→design-taste, accessibility→ui | frontend-design, ui | vs design-taste : art-direction **décide**, design-taste **audite** contre la décision |
+| **flo-motion** | Mouvement avancé (opt-in) | motion-choreography, motion-technique-selection, scroll-driven-motion, page-transitions, motion-language | animations→ui, micro-interactions→ui, accessibility→ui, client-components→nextjs, perceived-quality-audit→design-taste | ui, nextjs (si Next) | vs flo-ui : ui = règles de base de toute animation ; motion = quelle technique et quelle chorégraphie |
 
 ## Les frontières à risque — comment elles sont tranchées
 
@@ -120,6 +126,9 @@ domaine : l'implémentation reste à `flo-ui`, la validation à `playwright`. Ch
 7. **flo-dev-standards ↔ flo-debug** — `error-handling` = *pattern* de conception ; `error-diagnosis` = *diagnostic runtime*. `unit-testing` (dev) ≠ debug.
 8. **flo-debug ↔ flo-nextjs ↔ flo-seo** (performance) — debug = *pourquoi c'est lent* ; nextjs = *construire performant* ; seo = *budget/cible CWV*.
 9. **flo-project-audit ↔ flo-dev-standards ↔ design-taste** (« audit ») — project-audit = *projet/orchestration/roadmap* ; code-review = *code (change-level)* ; design-taste = *visuel*. L'orchestrateur **ne juge pas**, il route.
+
+10. **flo-ui ↔ flo-motion** — ui possède `animations`/`micro-interactions` (règles de base, tout projet) ; motion possède le *choix de technique* et la *chorégraphie* (couche opt-in). En conflit, ui prime.
+11. **design-taste ↔ flo-art-direction** — art-direction décide la direction (couche active) ; design-taste audite contre elle. Hors couche active, design-taste garde son rôle en CRÉATION.
 
 ## Vérification
 

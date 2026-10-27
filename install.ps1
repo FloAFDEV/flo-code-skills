@@ -25,7 +25,8 @@ $TargetBase = if ($Project) { Join-Path $Project ".claude" } else { Join-Path $H
 $Dest = Join-Path $TargetBase "skills"
 
 $AllSkills = @("flo-project-audit","flo-dev-standards","flo-debug","flo-medical","flo-nextjs",
-               "flo-supabase","flo-offline","flo-seo","frontend-design","flo-ui","design-taste","playwright")
+               "flo-supabase","flo-offline","flo-seo","frontend-design","flo-ui","design-taste","playwright",
+               "flo-creative-frontend","flo-art-direction","flo-motion")
 $Selected = if ($Only) { $Only } else { $AllSkills }
 
 function Get-SkillVersion($skillDir) {

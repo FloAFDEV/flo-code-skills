@@ -1,5 +1,8 @@
 # Changelog — design-taste
 
+## 2.2.0 — 2026-10-27
+- Règle additive : si la couche créative est active, audit contre la direction de `flo-art-direction` / `flo-motion`.
+
 ## 2.1.0 — 2026-10-24
 - Règle additive : chaque audit annonce son mode — écart à la référence en REPRODUCTION, cohérence avec son langage en ADAPTATION, direction artistique en CRÉATION ; les contraintes du projet priment toujours.
 

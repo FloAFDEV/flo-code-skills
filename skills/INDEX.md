@@ -15,7 +15,7 @@ last-reviewed: 2026-06-30
 > que sur les **sous-dossiers** contenant un `SKILL.md`, il l'ignore donc — la distribution
 > (`skills-sync.sh`) n'est pas affectée.
 
-## Les 12 skills (carte de navigation)
+## Les 15 skills (carte de navigation)
 
 | Skill | Phase | Autorité | Rôle | Source |
 |-------|-------|----------|------|--------|
@@ -31,6 +31,9 @@ last-reviewed: 2026-06-30
 | flo-seo | build | 8 | metadata, OG, JSON-LD, sitemap, robots | [SKILL](./flo-seo/SKILL.md) |
 | design-taste | audit | 9 | critique visuelle, détection « rendu IA » | [SKILL](./design-taste/SKILL.md) |
 | playwright | audit | 10 | E2E, smoke, régressions, captures | [SKILL](./playwright/SKILL.md) |
+| flo-creative-frontend | opt-in | hors échelle | active la couche créative par projet, priorité, réutilisation, bibliothèque | [SKILL](./flo-creative-frontend/SKILL.md) |
+| flo-art-direction | opt-in · plan/build | 7a | direction artistique, composition, rythme | [SKILL](./flo-art-direction/SKILL.md) |
+| flo-motion | opt-in · build | 7b | technique et chorégraphie Motion/scroll | [SKILL](./flo-motion/SKILL.md) |
 
 > Hiérarchie d'autorité complète, matrice des responsabilités et règles d'arbitrage :
 > [`../docs/skill-boundaries.md`](../docs/skill-boundaries.md) (source de vérité, vérifiée par CI).
@@ -39,7 +42,7 @@ last-reviewed: 2026-06-30
 
 Un nouveau skill est justifié **uniquement** s'il **change un comportement runtime** avec une
 responsabilité **non déjà possédée**. Au moindre doute « skill ou autre tier ? » → **ce n'est pas un
-skill** (→ Standard, Knowledge ou Artifact). Seul candidat identifié à ce jour : `flo-api-design`.
+skill** (→ Standard, Knowledge ou Artifact). Seul candidat identifié à ce jour : `flo-api-design`. La couche créative (3 skills opt-in) est justifiée par [ADR 0003](../knowledge/adr/0003-couche-frontend-creative.md).
 
 Procédure d'ajout : voir le README du dépôt et `../docs/skill-boundaries.md` (§ « Ajouter un skill »).
 

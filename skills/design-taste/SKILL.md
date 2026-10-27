@@ -1,6 +1,6 @@
 ---
 name: design-taste
-version: 2.1.0
+version: 2.2.0
 description: Auditeur visuel final. À activer après implémentation pour critiquer la qualité perçue, détecter les artefacts IA et aligner le rendu sur le niveau Linear / Stripe / Notion / Vercel. Produit des recommandations — ne génère ni ne modifie l'interface.
 owns:
   - visual-critique
@@ -51,6 +51,8 @@ Chaque constat nomme le problème précis, sa localisation, et le skill qui corr
 - **REPRODUCTION** — le critère est l'écart à la référence (Figma, Lovable, site existant, captures…). Un trait présent dans la référence, y compris un artefact listé ci-dessus, n'est pas un défaut ; toute amélioration est une option séparée, jamais appliquée d'office.
 - **ADAPTATION** — le critère est la cohérence avec l'intention et le langage visuel de la référence ; chaque écart doit être délibéré et justifié par le projet.
 - **CRÉATION** — aucune référence imposée : ce skill contribue à définir la direction artistique à partir du brief, de la marque, de la cible et des contraintes ; la checklist ci-dessus et le standard ci-dessous s'appliquent pleinement.
+
+**Couche créative active** (`flo-creative-frontend`) : la direction est décidée par `flo-art-direction` et la signature motion par `flo-motion` ; ce skill audite **contre** elles. Un mouvement ou une profondeur qui sert la compréhension n'est pas un artefact IA ; le standard Linear/Stripe ci-dessous cède devant la direction déclarée du projet.
 
 **Standard de référence :** sobriété, densité maîtrisée, typographie hiérarchisée, intention de marque lisible, raffinement par le retrait plutôt que par l'ajout.
 

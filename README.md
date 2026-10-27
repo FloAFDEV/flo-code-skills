@@ -5,7 +5,7 @@
 > Florent's universal Claude Code skills system (AFDEV) — a reference baseline built for **professional production**.
 > **Next.js 15+** · **Vite/React** · **Supabase** · **Offline-first (Dexie/IndexedDB)** · **SaaS & medical** · **premium UX/UI** · **advanced SEO** · **Playwright E2E**.
 
-12 skills that are **coherent, non-redundant and free of authority conflicts**, **versioned** and automatically verified.
+15 skills that are **coherent, non-redundant and free of authority conflicts**, **versioned** and automatically verified.
 Product goal: **credible, sober, professional** interfaces on par with **Linear, Stripe, Notion, Vercel** — and zero "AI-looking" output.
 
 > 🚀 **Get productive in under 5 minutes:** clone, then see **[INSTALL.md](./INSTALL.md)** (macOS / Linux / Windows, update, uninstall, verify).
@@ -22,7 +22,7 @@ Product goal: **credible, sober, professional** interfaces on par with **Linear,
 
 ---
 
-## 📦 The 12 skills
+## 📦 The 15 skills
 
 | Skill | Phase | Domain |
 |-------|-------|--------|
@@ -38,6 +38,9 @@ Product goal: **credible, sober, professional** interfaces on par with **Linear,
 | **flo-ui** | build | Components, Tailwind, responsive, a11y, animations, micro-interactions, design system, tokens |
 | **design-taste** | audit | Visual critique, perceived quality, **AI-artifact detection**, refinement, premium-SaaS benchmark |
 | **playwright** | audit | E2E, smoke, critical journeys, UI regression, screenshots, responsive, basic a11y, console, network |
+| **flo-creative-frontend** | opt-in | creative layer switch per project: rule precedence, reuse-first policy, pattern library |
+| **flo-art-direction** | opt-in | art direction method: composition, rhythm, surfaces, sections |
+| **flo-motion** | opt-in | Motion / scroll storytelling: technique selection, choreography, perf, reduced motion |
 
 Detailed boundaries: **[`docs/skill-boundaries.md`](./docs/skill-boundaries.md)** · internal architecture: **[`ARCHITECTURE.md`](./ARCHITECTURE.md)**.
 
