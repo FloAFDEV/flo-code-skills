@@ -27,7 +27,8 @@ SELECTED=()
 ACTION="install"
 
 ALL_SKILLS=(flo-project-audit flo-dev-standards flo-debug flo-medical flo-nextjs \
-            flo-supabase flo-offline flo-seo frontend-design flo-ui design-taste playwright)
+            flo-supabase flo-offline flo-seo frontend-design flo-ui design-taste playwright
+            flo-creative-frontend flo-art-direction flo-motion)
 
 while [[ $# -gt 0 ]]; do
   case "$1" in

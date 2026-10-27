@@ -11,7 +11,8 @@ hiérarchie d'autorité vivent dans [`docs/skill-boundaries.md`](./docs/skill-bo
 1. **Une responsabilité, un seul propriétaire.** Chaque token `owns` (frontmatter des `SKILL.md`)
    appartient à exactement un skill. `tools/check-overlaps.ts` échoue sinon.
 2. **Autorité hiérarchique.** Quand des règles se contredisent, le skill le plus haut l'emporte
-   (medical > supabase > dev-standards > nextjs > offline > frontend-design > ui > seo > design-taste > playwright).
+   (medical > supabase > dev-standards > nextjs > offline > frontend-design > ui > [art-direction > motion] > seo > design-taste > playwright).
+   Entre crochets : couche créative **opt-in** (`flo-creative-frontend`), inactive sauf déclaration du projet.
    Hors échelle : `flo-project-audit` (méta-coordinateur, ne juge pas) et `flo-debug` (diagnostic
    transverse, défère le correctif au propriétaire) — ni l'un ni l'autre n'a d'autorité de domaine.
 3. **Pipeline par phase.** Les skills collaborent dans le temps : `PLAN → BUILD → AUDIT → VALIDATION`.
@@ -106,7 +107,7 @@ c'est lui que `tools/check-overlaps.ts` analyse.
 
 ## 5. Agents — composition de skills
 
-Au-dessus des 12 skills, une couche d'**agents** (`.claude/agents/*.md`) compose plusieurs skills
+Au-dessus des 15 skills, une couche d'**agents** (`.claude/agents/*.md`) compose plusieurs skills
 pour un rôle de travail précis (isolation de contexte, curation, délégation). Un agent ne porte
 **aucune règle métier** — il déclare quels skills il précharge (frontmatter `skills:`), le contenu
 de chaque `SKILL.md` étant injecté depuis sa source unique, jamais copié. Détail, table des 6

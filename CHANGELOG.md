@@ -4,6 +4,17 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com). Versionnement
 (SemVer, voir `docs/VERSIONING.md`). Ce fichier agrège les évolutions ; chaque skill tient
 aussi son propre `skills/<skill>/CHANGELOG.md`.
 
+## [Couche frontend créative opt-in] — 2026-10-27
+
+### Added
+- **flo-creative-frontend** 1.0.0 — activation par projet (`.flo/creative-frontend.md`), priorité des sources, réutiliser-avant-créer, bibliothèque de patterns (`library/`).
+- **flo-art-direction** 1.0.0 — méthode de direction artistique (composition, rythme, surfaces, sections).
+- **flo-motion** 1.0.0 — choix de technique Motion/CSS, scroll storytelling, reduced motion, perf.
+- ADR 0003.
+
+### Changed
+- **design-taste** 2.1.0 → 2.2.0 — audite contre la direction déclarée quand la couche créative est active.
+
 ## [Workflow visuel — reproduction, adaptation, création] — 2026-10-24
 
 ### Added

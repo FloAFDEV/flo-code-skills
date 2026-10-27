@@ -1,0 +1,14 @@
+# Bibliothèque de patterns — index
+
+> Registre unique. Consulter AVANT de créer un composant (politique : `../SKILL.md` § Réutiliser).
+> Une entrée = un dossier `patterns/<id>/` avec `README.md` (+ implémentation de référence optionnelle).
+> On n'ajoute qu'un pattern **générique** qui a servi en vrai (colonne Origine).
+
+| id | Catégorie | Intention | Stack | Statut | Origine |
+|----|-----------|-----------|-------|--------|---------|
+
+Statuts : `provisional` (1 usage réel) → `stable` (≥ 2 projets) → `deprecated`.
+
+Catégories prévues (créées seulement au premier besoin réel) : hero · workflow · timeline · cards ·
+cta · badges · navigation · sections · stats · testimonials · feature-grid · steps · scroll ·
+transitions · layouts.
