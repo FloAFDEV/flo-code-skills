@@ -7,6 +7,7 @@
 | id | Catégorie | Intention | Stack | Statut | Origine |
 |----|-----------|-----------|-------|--------|---------|
 | [scroll-story](./patterns/scroll-story/README.md) | workflow · scroll | expliquer un parcours produit réel sur ses vrais écrans | React + motion | provisional | AuditRef (accueil) |
+| [live-product-demo](./patterns/live-product-demo/README.md) | démo · interaction | faire jouer le vrai composant produit (props + état local) sur une page publique | React | provisional | AuditRef (accueil) |
 
 Statuts : `provisional` (1 usage réel) → `stable` (≥ 2 projets) → `deprecated`.
 
