@@ -29,7 +29,10 @@ la structure. Distribution globale déjà en place (`skills-sync.sh` → symlink
    `CLAUDE.md`. Les descriptions des 3 skills les rendent inertes sans cette déclaration.
 4. **Autorité** : 7a (art-direction) et 7b (motion), sous `flo-ui` ; `design-taste` (2.2.0) audite
    contre la direction déclarée quand la couche est active.
-5. La bibliothèque n'est **pas** pré-remplie : un pattern y entre après un usage réel (projet pilote).
+5. **Agnostique de la stack** : les skills de la couche sont universels ; la stack détectée (Vite/React,
+   Astro, Next.js…) est une contrainte. Aucun skill ne migre ni ne propose de migrer un projet ; `flo-nextjs`
+   ne s'applique qu'aux projets Next.js.
+6. La bibliothèque n'est **pas** pré-remplie : un pattern y entre après un usage réel (projet pilote).
 
 ## Statut
 accepté.

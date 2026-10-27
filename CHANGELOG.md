@@ -11,6 +11,7 @@ aussi son propre `skills/<skill>/CHANGELOG.md`.
 - **flo-art-direction** 1.0.0 — méthode de direction artistique (composition, rythme, surfaces, sections).
 - **flo-motion** 1.0.0 — choix de technique Motion/CSS, scroll storytelling, reduced motion, perf.
 - ADR 0003.
+- Couche **agnostique de la stack** : détection de la stack réelle (Vite/React, Astro, Next.js…) traitée comme contrainte ; aucune migration de framework ; `flo-nextjs` uniquement sur les projets Next.js.
 
 ### Changed
 - **design-taste** 2.1.0 → 2.2.0 — audite contre la direction déclarée quand la couche créative est active.

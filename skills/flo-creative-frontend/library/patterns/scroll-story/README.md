@@ -1,6 +1,6 @@
 # scroll-story — récit produit au scroll sur de vrais écrans
 
-- **Statut** : provisional · **Origine** : AuditRef, page d'accueil (2026-10-27) · **Stack** : React + `motion` (Vite ou Next.js, Client Component)
+- **Statut** : provisional · **Origine** : AuditRef, page d'accueil (2026-10-27) · **Stack d'origine** : Vite + React + `motion` (SPA)
 - **Méthode motion** : `flo-motion/references/scroll-storytelling.md` (règles ; ce fichier = le pattern concret).
 
 ## Intention
@@ -38,6 +38,14 @@ Capturer l'app avec Playwright en rejouant le vrai parcours sur des données de 
 le script imprime les zones `focus` en % à reporter dans `steps.ts`. Formats : desktop 1024×640,
 mobile 390×760. Retirer le hover (`mouse.move(1,1)`) avant chaque capture.
 Référence : `audit_dat/scripts/capture-home-story.cjs`.
+
+## Selon la stack (le pattern s'adapte, la stack ne change pas)
+
+- **Vite + React** : implémentation d'origine telle quelle, dans le dossier de la surface.
+- **Next.js** : `Story` et `StoryScreen` en Client Components ; `steps.ts` importable côté serveur.
+- **Astro** : section et texte en `.astro` (contenu dans le HTML) ; scène sticky en CSS
+  (`position: sticky`) + `scroll()` / `inView()` de `motion` (API vanilla) dans un `<script>` qui bascule
+  une classe `is-active` par étape ; îlot React `client:visible` seulement si nécessaire.
 
 ## Mobile
 

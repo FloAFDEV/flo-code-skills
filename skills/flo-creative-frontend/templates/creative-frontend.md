@@ -5,7 +5,7 @@
 
 ## Statut
 Couche créative : **active**
-Stack : <Next.js App Router | Vite + React | …>   <!-- flo-nextjs ne s'applique que si Next.js -->
+Stack : <Vite + React | Astro | Next.js App Router | …>   <!-- contrainte : jamais de migration ; flo-nextjs seulement si Next.js -->
 
 ## Périmètre
 - Surfaces concernées : <ex. homepage publique `/`, pages marketing>

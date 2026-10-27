@@ -68,6 +68,15 @@ Sans support : élément visible (pas de `opacity:0` hors `@supports`).
 const reduce = useReducedMotion();                      // pour choisir une autre mise en page (pas de sticky)
 ```
 
+## Sans React (Astro, HTML) — API vanilla
+
+```ts
+import { animate, scroll, inView } from "motion";
+inView(".step", (el) => { animate(el, { opacity: [0, 1], y: [12, 0] }, { duration: 0.4 }); }, { amount: 0.3 });
+scroll(animate(".progress", { scaleY: [0, 1] }), { target: document.querySelector(".track")!, offset: ["start start", "end end"] });
+```
+Astro : dans un `<script>` du composant (bundlé, exécuté une fois) ; pas d'îlot React pour ça.
+
 ## Bundle
 
 ```tsx
