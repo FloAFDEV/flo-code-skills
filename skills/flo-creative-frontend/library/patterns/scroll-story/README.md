@@ -31,12 +31,26 @@ Faire comprendre **comment le produit s'utilise réellement**, étape par étape
 - « Trail » : puces cumulées de ce que le produit a enregistré (fil narratif concret).
 - A11y : la scène est `aria-hidden`, une `<ol class="sr-only">` porte titres, textes et descriptions des écrans.
 
+## Enseignements (pilote AuditRef, V2)
+
+- **Temps et écrans** : `steps[].frames[]` avec une part de piste (`scroll`, en svh) par écran ;
+  l'écran actif = premier dont la fin cumulée dépasse `scrollYProgress`.
+- **Lisibilité** : recadrage sur la zone (`focusCrop`, cf. `flo-motion/references/techniques.md`),
+  écran entier → zone ; aucun voile sombre ; anneau seul.
+- **Fil enregistré** : afficher ce que le produit a enregistré **dans le rail des étapes** (dans le
+  regard), pas en puces sous l'écran.
+- **Fin du récit** : le dernier temps montre la valeur produite (décision, livrable), jamais un
+  écran de navigation ; s'il existe une démo, le rail se termine par « À vous ».
+- **Mobile** : vignettes côte à côte pour le contexte, un seul écran lisible par temps clé, aucune
+  apparition animée répétée.
+
 ## Vrais écrans (pas de mockups)
 
 Capturer l'app avec Playwright en rejouant le vrai parcours sur des données de démo
 (navigateur jetable), `deviceScaleFactor: 2`, recadrage autour de la zone utile, WebP q≈82 ;
 le script imprime les zones `focus` en % à reporter dans `steps.ts`. Formats : desktop 1024×640,
-mobile 390×760. Retirer le hover (`mouse.move(1,1)`) avant chaque capture.
+mobile 390×760. Retirer le hover (`mouse.move(1,1)`) avant chaque capture. Pour une modale,
+recadrer sur son panneau (sans le fond assombri), au même ratio que le format.
 Référence : `audit_dat/scripts/capture-home-story.cjs`.
 
 ## Selon la stack (le pattern s'adapte, la stack ne change pas)

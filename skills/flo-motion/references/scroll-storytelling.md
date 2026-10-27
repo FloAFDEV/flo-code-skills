@@ -15,7 +15,9 @@ section (piste) height = N × ~90vh            ← donne la durée de scroll
 
 ## Règles
 
-1. **Une étape = une idée = un écran.** 4 à 7 étapes. Titre ≤ 6 mots, texte ≤ 25 mots.
+1. **Une étape = une idée.** 3 à 5 temps ; un temps peut enchaîner plusieurs écrans. Titre ≤ 6 mots, texte ≤ 25 mots.
+   **Part de scroll par écran** selon son poids narratif : le contexte passe vite, la valeur prend son temps.
+   Si une démo interactive suit, le récit ne rejoue pas le geste qu'elle fera faire.
 2. Texte **déclenché** (change d'un bloc au seuil), visuel éventuellement **scrubbé** (zoom/translation).
 3. Le visuel montre le vrai produit ; un focus (zoom, halo) désigne l'élément dont parle le texte.
 4. Progression visible et navigable (boutons → `scrollIntoView`/`scrollTo` sur l'ancre de l'étape).
@@ -29,4 +31,5 @@ section (piste) height = N × ~90vh            ← donne la durée de scroll
 ## Anti-patterns
 
 Pin > 7 écrans · texte qui défile pendant qu'il est lu · étape inaccessible sans scroll exact ·
-captures floues/zoomées au-delà de 1.25 · mockups inventés quand le vrai produit existe.
+captures floues (zoom au-delà de la résolution source) · mockups inventés quand le vrai produit existe ·
+même écran montré deux fois (vide puis rempli) au lieu d'un changement d'état · voile sombre qui ternit le produit.

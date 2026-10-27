@@ -47,9 +47,16 @@ useMotionValueEvent(scrollYProgress, "change", (p) => {
 
 ## Focus sur une zone d'un écran
 
-Zoom + translation du conteneur (`scale`, `x`, `y` sur un wrapper, `transformOrigin` sur la zone),
-voile `opacity` sur le reste, contour animé (`outline`/`box-shadow` statique + `opacity`). Jamais
-zoom > 1.25 : le texte devient flou sur les écrans rasterisés.
+But : rendre la zone **lisible**, pas « dynamiser ». Écran entier d'abord (le lecteur situe la zone),
+puis recadrage (`transformOrigin: 0 0`, `scale` + `x`/`y` en %) qui centre la zone sans révéler les bords :
+
+```ts
+const scale = clamp(Math.min(90 / w, 90 / h), 1, MAX);              // zone ≈ 90 % du cadre
+const shift = (c: number) => clamp(50 - c * scale, 100 - 100 * scale, 0); // en % de l'écran
+```
+`MAX` ≈ 1.25 pour une capture ×1, ≈ 1.8 pour une capture ×2. Si la zone remplit déjà le cadre,
+`scale` = 1 : rien ne bouge. Contour (anneau) plutôt que voile sombre — un voile ternit le produit.
+Jamais de micro-zoom décoratif (×1.03) : imperceptible, donc sans fonction.
 
 ## CSS scroll-driven (zéro JS)
 
