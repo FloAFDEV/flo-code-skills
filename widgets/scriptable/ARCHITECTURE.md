@@ -73,7 +73,9 @@ widgets/scriptable/
 │       │   ├── router.js            args.queryParameters → section
 │       │   └── runner.js            orchestre les modules actifs, budget de temps global
 │       ├── ui/
-│       │   ├── theme.js             tokens (couleurs, rayons, espacements, typo)
+│       │   ├── themes/claude.js     tokens identité « Claude Usage » (§5.1)
+│       │   ├── themes/afdev.js      tokens identité AFDEV (§5.2)
+│       │   ├── assets/afdev-mark.js monogramme AFDEV (PNG base64, généré depuis le SVG du site)
 │       │   ├── components.js        carte, en-tête, ligne, pastille d'état, état vide/erreur/périmé
 │       │   ├── gauge.js             anneau et barre (DrawContext)
 │       │   └── table.js             helpers UITable (vues de détail)
@@ -157,81 +159,100 @@ Le runner : ne charge que les modules `enabled`, sert le cache s'il est frais, a
 
 ## 4. Maquettes textuelles
 
-### 4.1 Claude Usage — petit (tout le widget → claude.ai/settings/usage)
+Gabarits iPhone (pt, varient selon le modèle) : petit ≈ 170 × 170 · moyen ≈ 364 × 170 · grand ≈ 364 × 382. Marge intérieure 16 pt partout.
+Légende : `━` remplissage de jauge · `─` piste · `[ … ]` badge pilule · `⏱` compteur vivant (`addDate`, mis à jour par iOS sans rafraîchissement).
+
+### 4.1 Claude Usage — petit · identité §5.1 · appui → claude.ai/settings/usage
 
 ```
 ╭──────────────────────────╮
-│ ✳︎ Claude          5 h   │
+│ ✦ Claude                 │  glyphe neutre terracotta 12 pt + « Claude » sans 13 semibold, crème
 │                          │
-│        ╭──────╮          │
-│       │  62 %  │         │   anneau orange, rouge ≥ 90 %
-│        ╰──────╯          │
+│ 62 %                     │  serif 34, crème
+│ Session · 5 h            │  sans 12, gris chaud
+│ ━━━━━━━━━━━━─────────    │  barre 4 pt, rayon 2, terracotta sur piste
 │                          │
-│ Réinit. 16:40            │
-│ dans 1 h 52              │   compteur vivant (addDate)
+│ Réinit. 16:40            │  sans 12, gris chaud
+│ dans 1 h 52 ⏱            │  sans 13 medium, crème
 ╰──────────────────────────╯
 ```
 
-### 4.2 Claude Usage — moyen
+### 4.2 Claude Usage — moyen · identité §5.1
+
+Barres horizontales empilées, comme la page d'usage de claude.ai : même lecture, rien d'inventé.
 
 ```
 ╭────────────────────────────────────────────────╮
-│ ✳︎ Claude · Max                    ⟳ il y a 6 min │
-│ ┌─────────────────────┐ ┌─────────────────────┐│
-│ │ Session 5 h         │ │ Semaine 7 j         ││
-│ │ 62 %                │ │ 38 %                ││
-│ │ ▓▓▓▓▓▓▓▓▓░░░░░      │ │ ▓▓▓▓▓░░░░░░░░░      ││
-│ │ Réinit. 16:40       │ │ Réinit. lun. 09:00  ││
-│ │ dans 1 h 52         │ │ dans 3 j            ││
-│ └─────────────────────┘ └─────────────────────┘│
+│ ✦ Claude · usage                  Synchro 08:06 │  synchro : sans 11, gris chaud
+│                                                │
+│ Session · 5 h                            62 %  │  libellé sans 13 · valeur serif 22
+│ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━──────────────────  │
+│ Réinit. 16:40 · dans 1 h 52 ⏱                  │  sans 12, gris chaud
+│                                                │
+│ Semaine · 7 j                            38 %  │
+│ ━━━━━━━━━━━━━━━━━──────────────────────────────  │
+│ Réinit. lun. 3 nov. · 09:00                    │
 ╰────────────────────────────────────────────────╯
-États : « Donnée de l'iMac — il y a 9 h » (périmée, pastille grise)
-        « Fenêtre réinitialisée — usage non resynchronisé »
-        « Aucune donnée — ouvrez Claude Code sur l'iMac » (setup)
 ```
 
-### 4.3 Flo Dashboard — moyen (chaque tuile → sa rubrique)
+États (même gabarit, jamais signalés par la seule couleur) :
+
+| État | Rendu |
+|---|---|
+| ≥ 80 % | libellé « Limite proche » à droite du titre de la ligne, barre inchangée |
+| 100 % | « Limite atteinte », barre pleine, compteur jusqu'à la réinitialisation |
+| Périmé (> 1 h) | barres à 40 % d'opacité, « Synchro il y a 9 h » |
+| Fenêtre réinitialisée | barre vide en pointillés, « Réinitialisée — en attente de synchro » |
+| Aucune donnée | « Ouvrez Claude Code sur l'iMac pour synchroniser » |
+
+### 4.3 Flo Dashboard — moyen · identité §5.2 · chaque tuile → sa rubrique
 
 ```
 ╭────────────────────────────────────────────────╮
-│ Flo                         jeu. 30 oct. 08:12 │
-│ ┌──────────────┐ ┌──────────────┐              │
-│ │ ◉ Sites      │ │ ▲ Déploiem.  │              │
-│ │ 4/4 en ligne │ │ ✓ lylusio    │              │
-│ │ moy. 240 ms  │ │ il y a 2 h   │              │
-│ └──────────────┘ └──────────────┘              │
-│ ┌──────────────┐ ┌──────────────┐              │
-│ │ ☁︎ Moto       │ │ ◷ Agenda     │              │
-│ │ ✓ Favorable  │ │ 10:00 RDV    │              │
-│ │ 14° · 10 %   │ │ + 2 rappels  │              │
-│ └──────────────┘ └──────────────┘              │
+│ ▲ AFDEV              DASHBOARD   JEU 30 · 08:12 │  monogramme 14 pt · surtitres mono 9 MAJ. espacées
+│ ┌─────────────────────┐ ┌─────────────────────┐ │
+│ │ SITES        [ OK ] │ │ DÉPLOIEMENTS [READY]│ │  surtitre mono 9 gris · badge pilule bordé
+│ │ 4/4                 │ │ lylusio             │ │  valeur sans 20 bold, crème
+│ │ en ligne · 240 ms   │ │ il y a 2 h          │ │  sans 11, gris
+│ └─────────────────────┘ └─────────────────────┘ │
+│ ┌─────────────────────┐ ┌─────────────────────┐ │
+│ │ MOTO        [ ✓ GO ]│ │ AGENDA         10:00│ │
+│ │ 14° · pluie 10 %    │ │ RDV client          │ │
+│ │ rafales 25 km/h     │ │ + 2 rappels         │ │
+│ └─────────────────────┘ └─────────────────────┘ │
 ╰────────────────────────────────────────────────╯
-Règle de priorité : une tuile en erreur/alerte remplace la tuile la moins prioritaire.
 ```
 
-### 4.4 Flo Dashboard — grand
+Priorité : une tuile en erreur/alerte (site hors ligne, build en échec) remplace la tuile la moins prioritaire et passe en premier.
+
+### 4.4 Flo Dashboard — grand · identité §5.2
 
 ```
 ╭────────────────────────────────────────────────╮
-│ Flo Dashboard               jeu. 30 oct. 08:12 │
-│ SITES ───────────────────────────────────────  │
-│ ● afdev.fr            200   180 ms             │
-│ ● lylusio.fr          200   210 ms             │
-│ ● aurelia-desvaux.fr  200   260 ms             │
-│ ✕ garagemendonca.com  503   —        ⚠        │
-│ DÉPLOIEMENTS · GITHUB ───────────────────────  │
-│ ✓ lylusio      Ready      il y a 2 h           │
-│ ⟳ afdev        Building   il y a 4 min         │
-│ ⇅ 3 PR ouvertes · dernier commit il y a 40 min │
-│ MOTO ────────────── ✓ Favorable ───────────────│
-│ 08:00  12° · pluie 10 % · rafales 25 km/h      │
-│ 18:30  17° · pluie 20 % · rafales 30 km/h      │
-│ AGENDA ──────────────── TISSÉO ─────────────── │
-│ 10:00 RDV client       L1 · Arènes  dans 4 min │
-│ 🎂 Léa — samedi         ⚠ Ligne A perturbée     │
+│ ▲ AFDEV              DASHBOARD   JEU 30 · 08:12 │
+│                                                │
+│ SITES ─────────────────────────────── 3/4 ⚠    │  surtitre ambre si alerte, sinon gris
+│ ● afdev.fr               200   180 ms          │  domaine sans 12 · code/ms mono 11
+│ ● lylusio.fr             200   210 ms          │
+│ ● aurelia-desvaux.fr     200   260 ms          │
+│ ✕ garagemendonca.com     503   —     [ DOWN ]  │
+│                                                │
+│ DÉPLOIEMENTS · GITHUB ─────────────────────── │
+│ ✓ lylusio     [ READY ]          il y a 2 h    │
+│ ⟳ afdev       [ BUILD ]          il y a 4 min  │
+│ 3 PR ouvertes · dernier commit il y a 40 min   │
+│                                                │
+│ MOTO ──────────────────────────── [ ✓ GO ]     │
+│ 08:00   12°   pluie 10 %   rafales 25 km/h     │  colonnes mono 11 alignées
+│ 18:30   17°   pluie 20 %   rafales 30 km/h     │
+│                                                │
+│ AGENDA ────────────────  TISSÉO ────────────── │
+│ 10:00 RDV client         L1 Arènes  4 min ⏱    │
+│ Sam. Anniv. Léa          ⚠ Ligne A perturbée   │
 ╰────────────────────────────────────────────────╯
-Analytics : remplace « Agenda » si Famille est désactivé, ou affiché dans l'app.
 ```
+
+Analytics : remplace « Agenda » si Famille est désactivé, sinon visible dans l'app (sparkline 7 j par site).
 
 ### 4.5 Dans l'app
 
@@ -239,23 +260,69 @@ Analytics : remplace « Agenda » si Famille est désactivé, ou affiché dans l
 
 ---
 
-## 5. Identité visuelle (tokens `ui/theme.js`)
+## 5. Identités visuelles
 
-| Token | Valeur | Usage |
-|---|---|---|
-| `bg` | `#1C1C1E` | fond anthracite |
-| `card` | `#2C2C2E` | cartes |
-| `cardStroke` | `#3A3A3C` | séparation subtile |
-| `text` / `textMuted` | `#F2F2F7` / `#98989F` | texte (contraste AA vérifié sur `card`) |
-| `orange` | `#FF9F0A` | Claude |
-| `blue` | `#0A84FF` | infra, Tisséo, météo |
-| `green` / `red` | `#30D158` / `#FF453A` | OK / erreur |
-| `violet` | `#BF5AF2` | GitHub, analytics |
-| `radius` | 16 (carte), 6 (barre) | — |
-| `space` | 4 · 8 · 12 · 16 | — |
-| Typo | `semiboldRoundedSystemFont` (chiffres 28/20), `systemFont` 12–13, `mediumMonospacedSystemFont` (ms, %) | — |
+Deux identités **séparées**, chacune dans son fichier de tokens : aucune valeur en dur hors de `ui/themes/*.js` (règle `flo-ui`). Les composants (`card`, `bar`, `badge`, `row`) sont communs et prennent le thème en paramètre : même code, deux identités. Partout : pas d'ombre, pas de lueur, pas de dégradé décoratif ; chaque état porte une icône **et** un libellé.
 
-Règles `flo-ui` transposées : aucune valeur en dur hors `theme.js` ; chaque état porte une icône **et** un libellé (✓/⚠/✕), jamais la couleur seule ; 5 états par carte : chargement (premier lancement), vide, erreur, périmé, succès ; zones d'appui ≥ 44 pt.
+### 5.1 Claude Usage — inspirée de Claude, sans se présenter comme officielle
+
+**Logo officiel : je ne l'intègre pas.** D'après les [Trademark Guidelines d'Anthropic](https://www.anthropic.com/legal/trademark-guidelines), les marques (noms, logos, éléments de marque) ne peuvent être utilisées qu'avec leur accord préalable, sans aucune modification de couleur ni de proportion, et sans laisser croire à un partenariat. Le guide ne prévoit pas d'exception pour un usage personnel, et ce dépôt est distribué sous licence MIT : y placer le logo reviendrait à le redistribuer.
+Le widget reste reconnaissable par d'autres moyens :
+- le nom « Claude » en texte, pour désigner ce qui est mesuré ;
+- un **glyphe neutre** (SF Symbol `sparkle`, à 4 branches, qui n'imite pas le logo Claude) ;
+- la palette terracotta sur fond gris chaud, et un chiffre en serif.
+- La mention « Widget personnel non officiel — non affilié à Anthropic » figure dans la vue de détail de l'app (trop longue pour tenir dans le widget).
+
+Palette : couleurs publiées par Anthropic dans son skill officiel `brand-guidelines` (Dark `#141413`, Light `#FAF9F5`, Mid Gray `#B0AEA5`, Orange `#D97757`). Les fonds sombres reprennent l'interface sombre de claude.ai : **valeurs relevées à confirmer sur une capture**.
+
+| Token | Valeur | Usage | Contraste |
+|---|---|---|---|
+| `bg` | `#262624` | fond anthracite chaud | — |
+| `card` | `#30302E` | zone de jauge (moyen) | — |
+| `track` | `#3D3D3A` | piste des barres | — |
+| `text` | `#FAF9F5` | chiffres, titres | 12,6:1 sur `card` |
+| `textMuted` | `#B0AEA5` | libellés, dates | 5,9:1 sur `card` · 6,8:1 sur `bg` |
+| `accent` | `#D97757` | glyphe, remplissage des jauges | 4,9:1 sur `bg` — **réservé aux jauges et grands chiffres** (≥ 3:1 UI), jamais au petit texte |
+| `radius` | 20 (widget, imposé par iOS) · 12 (carte) · 2 (barre) | | |
+| `space` | 4 · 8 · 12 · 16 | | |
+
+Typographie :
+- **Chiffres** en serif, pour rappeler les titres serif de Claude : `Charter` (installée sur iOS, à vérifier sur l'appareil), à défaut `Georgia`. Les polices propres à Claude ne sont pas disponibles.
+- **Texte** en `systemFont` (SF Pro), chasse 12 à 13.
+- Pas de monospace, pour rester sobre.
+
+Jauges : barres horizontales de 4 pt, extrémités arrondies, sur les deux formats, comme la page d'usage de claude.ai. Pas d'anneau.
+
+### 5.2 Flo Dashboard — identité AFDEV (relevée sur afdev.fr)
+
+Source : la feuille de style en production (`/_astro/SiteLayout.*.css`, variables OKLCH converties en hex) et le SVG du logo en en-tête. Rien n'est inventé, sauf les couleurs `ok`/`info` (marquées *), absentes du site.
+
+| Token | Variable du site | Valeur | Usage | Contraste |
+|---|---|---|---|---|
+| `bg` | `--background` | `#0B0604` | fond (noir chaud) | — |
+| `card` | `--card` | `#120C07` | tuiles | — |
+| `cardAlt` | `--secondary` | `#211912` | lignes alternées, piste de jauge | — |
+| `stroke` | `--border` (crème 10 %) | `#F4EEE4` @ 10 % | bordures de tuiles et de badges | — |
+| `text` | `--foreground` | `#F4EEE4` | valeurs | 16,8:1 |
+| `textMuted` | `--muted-foreground` | `#978D82` | surtitres, métadonnées | 6,0:1 |
+| `primary` | `--primary` | `#F7A224` | surtitres en alerte, badges actifs, liens | 9,4:1 |
+| `danger` | `--destructive` | `#F9423D` | hors ligne, échec | 5,4:1 |
+| `ok`* | dérivé de `primary` (même L/C, teinte 150) | `#67D283` | en ligne, prêt | 10,3:1 |
+| `info`* | dérivé (teinte 240) | `#55AEE8` | build en cours, Tisséo | 8,0:1 |
+| Logo | `.st0/.st1/.st2` du SVG | `#FFE458` · `#F49916` · `#252528` | monogramme en-tête | — |
+| `radius` | `--radius-2xl` / `--radius-lg` / `rounded-full` | 16 · 8 · pilule | tuile · ligne · badge | |
+
+Conventions du site reprises :
+- **Surtitres** en mono, majuscules, très espacés (`font-mono text-xs uppercase tracking-[0.3em]`), en `primary` ou en `textMuted`.
+- **Badges pilule** bordés (`rounded-full border text-[10px] uppercase tracking-wider`).
+- **Typographie** : Inter et JetBrains Mono sur le site, transposées en `systemFont` (SF Pro, très proche d'Inter) et `mediumMonospacedSystemFont` (SF Mono). Inter et JetBrains Mono ne sont pas fournies par iOS, et rien ne garantit que Scriptable lise une police installée par profil : c'est un test optionnel en P2.
+- **Exclusions** : `--shadow-glow`, `--gradient-radial` et le bruit de fond du site sont décoratifs et ne sont pas repris dans le widget. Le dégradé ambre reste réservé au monogramme.
+- **Logo** : le SVG d'afdev.fr est converti une fois en PNG (Scriptable ne lit pas le SVG) et stocké en base64 dans `ui/assets/afdev-mark.js`. C'est votre propre marque, sans contrainte.
+
+**Point d'attention :** les deux identités sont chaudes. Elles restent distinctes par :
+- le fond : gris chaud clair `#262624` pour Claude, noir brun `#0B0604` pour AFDEV ;
+- l'accent : terracotta désaturé pour Claude, ambre vif pour AFDEV ;
+- la typographie : serif pour Claude, mono en majuscules pour AFDEV.
 
 ---
 
@@ -335,7 +402,7 @@ module.exports = {
 
 | Étape | Contenu | Dépend de |
 |---|---|---|
-| **P0** | Socle `core/` + `ui/theme`, `components`, `gauge` + `Flo Réglages` + `sync-to-icloud.sh` | — |
+| **P0** | Socle `core/` + `ui/themes` (Claude, AFDEV), `components`, `gauge`, monogramme AFDEV + `Flo Réglages` + `sync-to-icloud.sh` | — |
 | **P1-a** | Script de diagnostic de status line (lecture seule) : confirmer `rate_limits` et le format de `resets_at` sur votre iMac | votre accord |
 | **P1-b** | `statusline-sync.sh` + widget Claude Usage petit et moyen | P0, P1-a OK |
 | **P2** | Flo Dashboard moyen : Sites + Moto Météo (aucun secret) + routeur/menu app | P0 |
@@ -357,6 +424,9 @@ module.exports = {
 5. Tisséo : arrêts/lignes favoris — et lancez la demande de clé dès maintenant (délai).
 6. Moto : coordonnées approximatives domicile/travail, heures aller/retour, seuils.
 7. Widget moyen du dashboard : les 4 tuiles prioritaires proposées vous conviennent-elles ?
+8. Claude Usage sans logo officiel (glyphe neutre + nom en texte) : validé ?
+9. Fonds Claude `#262624`/`#30302E` : à confirmer par une capture de claude.ai en mode sombre sur votre iPhone.
+10. Badges en anglais (`READY`, `BUILD`, `DOWN`) repris des statuts Vercel, ou traduits (`PRÊT`, `EN COURS`, `HORS LIGNE`) ?
 
 ---
 
@@ -367,4 +437,7 @@ module.exports = {
 - Scope de `setup-token` et 403 sur l'usage : https://claudeissues.com/issue/24200-setup-token-missing-user-profile-scope-usage-tab-in-status-broken · https://claudeissues.com/issue/81015-feature-request-read-only-usage-scope-on-claude-setup-token-or-a-usage-read-gran
 - Format de `/api/oauth/usage` (non documenté, variable) : https://pypi.org/project/ccusage/
 - `rate_limits` dans la status line : https://wmedia.es/en/tips/claude-code-usage-limit-status-line · https://github.com/anthropics/claude-code/issues/45133
+- Marques Anthropic : https://www.anthropic.com/legal/trademark-guidelines
+- Palette Anthropic (skill officiel `brand-guidelines`) : https://github.com/anthropics/skills
+- Identité AFDEV : https://afdev.fr (CSS de production et SVG du logo, relevés le 30/10/2026)
 - API Tisséo : https://data.toulouse-metropole.fr/explore/dataset/api-temps-reel-tisseo/
