@@ -4,6 +4,15 @@ Format inspiré de [Keep a Changelog](https://keepachangelog.com). Versionnement
 (SemVer, voir `docs/VERSIONING.md`). Ce fichier agrège les évolutions ; chaque skill tient
 aussi son propre `skills/<skill>/CHANGELOG.md`.
 
+## [Performance — capitalisation Garage Mendonça] — 2026-11-13
+
+### Changed
+- **flo-dev-standards** 2.1.0 → 2.2.0 — validation performance obligatoire avant livraison (appels réseau par parcours, cascades/redondances, comparaison avant/après, régressions fonctionnelles/visuelles/sécurité, distinction local/simulé/production), checklist réutilisable en 7 étapes, exemple chiffré Garage Mendonça (153 → 32 appels Supabase, mesures locales simulées).
+- **flo-nextjs** 2.1.0 → 2.2.0 — pratiques de performance App Router (frontière Server/Client, Server Actions, prefetch admin, ISR/cache, invalidation ciblée, waterfalls, région Vercel vs données, coût `next/image`) ; cas de non-optimisation documentés.
+- **flo-supabase** 2.0.0 → 2.1.0 — résolution d'identité non répétée/non partagée, détection de cascades, autorisation garantie avant mutation, cohérence cache local/Realtime (mise à jour ciblée, événements concurrents/doublons/réponses obsolètes, polling de secours), pagination serveur, mesure avant/après pour les index SQL.
+
+Le diagnostic de cause racine d'une lenteur reste la frontière de `flo-debug` (inchangé, non touché par cette évolution) — ces trois skills documentent la validation et la construction, jamais le diagnostic. Aucun nouveau token `owns`. Trois bumps MINOR additifs, non cassants.
+
 ## [Workflow visuel — reproduction, adaptation, création] — 2026-10-24
 
 ### Added

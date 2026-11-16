@@ -1,6 +1,6 @@
 ---
 name: flo-supabase
-version: 2.0.0
+version: 2.1.0
 description: Règles d'accès aux données et de sécurité backend avec Supabase. À activer pour toute RLS, policy, Edge Function, migration SQL, gestion d'auth/session ou accès base de données. Sécurité d'abord — la RLS n'est jamais contournée et le service_role ne fuit jamais côté client.
 owns:
   - rls
@@ -50,13 +50,29 @@ Garantir que tout accès aux données est contrôlé par des règles de sécurit
 
 **Migrations :** tout changement de schéma = migration versionnée dans le repo. Contraintes (NOT NULL, FK, CHECK, UNIQUE) au niveau DB — pas uniquement applicatif.
 
+**Performance des requêtes :**
+- Ne pas répéter `getUser()` ou toute résolution d'identité à chaque requête d'un même parcours — la résoudre une fois, la réutiliser pour le reste du parcours.
+- Jamais de cache d'identité partagé entre utilisateurs ou entre requêtes concurrentes : un cache d'identité est strictement scopé à la requête ou à la session qui l'a produit.
+- Détecter les cascades de requêtes (une requête qui en déclenche plusieurs autres en séquence) — paralléliser ou regrouper quand la dépendance n'est pas réelle.
+- Garantir l'autorisation avant toute mutation, y compris quand une optimisation change le chemin d'exécution — une optimisation ne devient jamais un raccourci qui saute la vérification serveur.
+- Conserver une pagination et des filtres exhaustifs côté serveur quand le volume le justifie — ne jamais reporter sur le client un filtrage qui devrait réduire la charge réseau en amont.
+
+**Cohérence cache local / Realtime :**
+- Après une mutation ciblée, mettre à jour localement l'élément concerné plutôt que recharger la liste complète — à condition que la cohérence avec le serveur soit préservée.
+- Synchroniser caches locaux, compteurs et statuts affichés avec l'état réellement confirmé par le serveur : un compteur qui diverge du serveur est un bug, pas un détail d'UI.
+- Éviter le double rafraîchissement — un événement Realtime et une mise à jour locale optimiste qui se chevauchent sur la même donnée — en choisissant une source qui tranche en cas de conflit.
+- Gérer explicitement les événements concurrents, les doublons et les réponses obsolètes (une réponse arrivant après qu'un état plus récent a déjà été appliqué) : l'ordre d'arrivée réseau n'est pas un ordre de vérité.
+- Conserver un polling de secours raisonnable quand Realtime peut se déconnecter silencieusement ; tester explicitement la perte de connexion et la resynchronisation au retour.
+
+**Index SQL :** toute modification d'index se mesure avant/après (plan d'exécution, temps de requête réel) — un index ajouté sans mesure préalable est une hypothèse, pas une optimisation. Illustration chiffrée de la méthode avant/après : voir l'exemple Garage Mendonça dans `flo-dev-standards`.
+
 ## Autorité
 
 Niveau 2. Cède uniquement devant `flo-medical`. Prime sur tout le reste pour la sécurité d'accès — aucun besoin de performance, d'UX, de design ou de SEO ne justifie d'affaiblir la RLS.
 
 ## Définition de terminé
 
-RLS activée sur toutes les tables avec policies testées (autorisé + refusé). Aucune clé `service_role` accessible côté client. Toutes les Edge Functions valident et authentifient. Les migrations sont versionnées dans le repo.
+RLS activée sur toutes les tables avec policies testées (autorisé + refusé). Aucune clé `service_role` accessible côté client. Toutes les Edge Functions valident et authentifient. Les migrations sont versionnées dans le repo. Aucune résolution d'identité redondante ni cache d'identité partagé entre utilisateurs ; les mutations ciblées mettent à jour l'état local sans recharger des listes entières ni dupliquer Realtime et optimiste.
 
 ## Références
 
