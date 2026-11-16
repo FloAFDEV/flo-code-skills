@@ -1,6 +1,6 @@
 ---
 name: flo-nextjs
-version: 2.1.0
+version: 2.2.0
 description: Règles Next.js 15+ (App Router). À activer pour routes, layouts, Server/Client Components, data fetching serveur, caching/revalidation, Server Actions, next/image, next/font, middleware et configuration de rendu. Possède la mécanique de l'API Metadata (pas son contenu, qui appartient à flo-seo).
 owns:
   - app-router
@@ -45,6 +45,19 @@ Concevoir et implémenter correctement les routes, le rendu et la performance d'
 
 **Build :** ne jamais désactiver les vérifications TypeScript ou ESLint dans `next.config`.
 
+**Performance App Router :**
+- Revoir la frontière Server/Client à chaque doute de performance — un Client Component mal placé répète côté client ce qui devrait rester serveur.
+- Éviter les Server Actions redondantes ou déclenchées en cascade pour une même interaction utilisateur.
+- Auditer le préchargement automatique de Next (`<Link>` prefetch) — en particulier dans les interfaces admin à forte densité de liens, où il peut multiplier les requêtes sans bénéfice perçu.
+- Utiliser ISR et la mise en cache dès que la fraîcheur des données le permet — un `no-store`/`dynamic` par défaut sans intention consciente est un coût, pas une prudence.
+- `revalidatePath`/`revalidateTag` ciblés : une invalidation trop large régénère plus que nécessaire. Préférer la mise à jour locale ciblée quand elle préserve la cohérence avec le serveur — sans jamais en faire la source de vérité (voir `flo-offline` pour la persistance locale).
+- Vérifier les waterfalls de requêtes (chargements séquentiels dépendants) — paralléliser ce qui est réellement indépendant.
+- Contrôler la région d'exécution Vercel par rapport à la localisation des services de données : une latence réseau région-à-région s'ajoute au temps de réponse perçu, souvent invisible en développement local.
+- `next/image` reste la référence pour les images — en auditer le coût réel (formats, tailles servies) avant d'envisager de le désactiver ; ne jamais le désactiver par défaut « pour gagner du temps ».
+- Mesurer les requêtes et la réactivité sur des navigations réelles, pas seulement au premier chargement de page.
+
+**Cas où ne pas optimiser :** un cache agressif sur une donnée qui doit rester immédiatement cohérente (ex. statut d'une mutation que l'utilisateur vient de déclencher) introduit un bug perçu pire que le gain de performance — préférer la fraîcheur à la vitesse dans ce cas précis. Une mise à jour locale ciblée ne remplace jamais une invalidation serveur quand deux utilisateurs peuvent diverger sur le même état. Diagnostiquer la cause précise d'une lenteur (le *pourquoi*, pas la construction) relève de `flo-debug`, pas de ce skill. Illustration chiffrée de ces principes : voir l'exemple Garage Mendonça dans `flo-dev-standards`.
+
 **Analytics (Umami) :** quand un projet intègre Umami (défaut recommandé par `flo-dev-standards`, qui fixe le choix — pas la mécanique), le script de suivi se charge via `next/script` dans le layout racine, jamais derrière un `'use client'` dédié pour ce seul besoin. L'identifiant de site vient d'une variable d'environnement publique (`NEXT_PUBLIC_UMAMI_WEBSITE_ID`) — jamais codé en dur ; ce n'est pas un secret (identifiant public), mais il reste piloté par variable d'environnement comme tout paramètre d'intégration tierce. Activation en production uniquement : variable absente en développement = script absent, pas de condition supplémentaire à écrire. Si le projet instrumente des événements/objectifs personnalisés, ils restent déclenchés côté client au moment de l'interaction, sans dupliquer une logique métier serveur — même principe que n'importe quel script tiers, pas un cas spécial.
 
 **Exception offline-first (assumée) :** les lectures depuis le store IndexedDB côté client relèvent de `flo-offline` et ne violent pas « Server Component par défaut » — c'est une exception documentée propre à cette architecture.
@@ -55,7 +68,7 @@ Niveau 4. Cède devant `flo-medical`, `flo-supabase`, `flo-dev-standards`. Tranc
 
 ## Définition de terminé
 
-Toutes les routes utilisent l'App Router. Les stratégies de cache sont documentées et intentionnelles. Aucun secret ne transite vers un Client Component. Les Server Actions valident et autorisent côté serveur. Si Umami est intégré, il l'est via `next/script` dans le layout racine, avec son identifiant de site en variable d'environnement.
+Toutes les routes utilisent l'App Router. Les stratégies de cache sont documentées et intentionnelles. Aucun secret ne transite vers un Client Component. Les Server Actions valident et autorisent côté serveur. Les waterfalls de requêtes et les effets du prefetch ont été vérifiés sur navigation réelle, avec les cas de non-optimisation documentés. Si Umami est intégré, il l'est via `next/script` dans le layout racine, avec son identifiant de site en variable d'environnement.
 
 ## Références
 
